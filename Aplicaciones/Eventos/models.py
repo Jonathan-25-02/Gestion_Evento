@@ -7,91 +7,89 @@ class Carrera(models.Model):
     def __str__(self):
         return self.nombre
 
-class Usuario(models.Model):
-    TIPO_USUARIO = [
-        ('Estudiante', 'Estudiante'),
-        ('Organizador', 'Organizador'),
-        ('Administrador', 'Administrador'),
-    ]
-    nombres = models.CharField(max_length=100)
-    apellidos = models.CharField(max_length=100)
-    correo = models.EmailField(unique=True)
-    tipo_usuario = models.CharField(max_length=20, choices=TIPO_USUARIO)
-    carrera = models.ForeignKey(Carrera, on_delete=models.CASCADE)
-    semestre = models.CharField(max_length=20, blank=True)
+
+class ModalidadEvento(models.Model):
+    tipo = models.CharField(max_length=50)
 
     def __str__(self):
-        return f"{self.nombres} {self.apellidos}"
+        return self.tipo
+
+
+class Usuario(models.Model):
+    nombre_completo = models.CharField(max_length=100)
+    correo = models.EmailField(unique=True)
+    tipo = models.CharField(max_length=20)  # estudiante, docente, admin
+    carrera = models.ForeignKey(Carrera, on_delete=models.SET_NULL, null=True)
+    semestre = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.nombre_completo
+
 
 class Evento(models.Model):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=200)
     descripcion = models.TextField()
-    fecha = models.DateField()
-    modalidad = models.CharField(max_length=50)
-    lugar = models.CharField(max_length=100)
-    cupo_maximo = models.IntegerField()
-    requiere_requisitos = models.BooleanField(default=False)
+    fecha_inicio = models.DateField()
+    fecha_fin = models.DateField()
+    cupos = models.PositiveIntegerField()
+    modalidad = models.ForeignKey(ModalidadEvento, on_delete=models.SET_NULL, null=True)
+    organizador = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='eventos_organizados')
 
     def __str__(self):
         return self.nombre
 
-class Requisito(models.Model):
-    evento = models.ForeignKey(Evento, on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
+
+class EstadoInscripcion(models.Model):
+    nombre = models.CharField(max_length=50)
 
     def __str__(self):
         return self.nombre
+
 
 class Inscripcion(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE)
-    fecha_inscripcion = models.DateTimeField(auto_now_add=True)
-    estado = models.CharField(max_length=20, default='Pendiente')
+    estado = models.ForeignKey(EstadoInscripcion, on_delete=models.SET_NULL, null=True)
+    fecha_inscripcion = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.usuario} - {self.evento}"
+        return f"{self.usuario} inscrito en {self.evento}"
+
 
 class ArchivoRequisito(models.Model):
     inscripcion = models.ForeignKey(Inscripcion, on_delete=models.CASCADE)
-    archivo = models.FileField(upload_to='requisitos/', null=True, blank=True)
+    archivo = models.FileField(upload_to='requisitos/')
+    tipo_archivo = models.CharField(max_length=50)
+    fecha_subida = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"Archivo - {self.inscripcion}"
+        return f"Archivo para {self.inscripcion}"
+
 
 class Asistencia(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    evento = models.ForeignKey(Evento, on_delete=models.CASCADE)
-    fecha_asistencia = models.DateTimeField(auto_now_add=True)
-    qr_validado = models.BooleanField(default=False)
+    inscripcion = models.ForeignKey(Inscripcion, on_delete=models.CASCADE)
+    fecha = models.DateTimeField(auto_now_add=True)
+    metodo_validacion = models.CharField(max_length=50)  # QR, manual, etc.
 
     def __str__(self):
-        return f"Asistencia: {self.usuario} - {self.evento}"
+        return f"Asistencia de {self.inscripcion}"
+
 
 class Certificado(models.Model):
     inscripcion = models.OneToOneField(Inscripcion, on_delete=models.CASCADE)
-    archivo_certificado = models.FileField(upload_to='certificados/')
-    generado = models.BooleanField(default=False)
+    archivo_pdf = models.FileField(upload_to='certificados/')
+    codigo_verificacion = models.CharField(max_length=100, unique=True)
+    fecha_emision = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"Certificado de {self.inscripcion.usuario}"
+        return f"Certificado para {self.inscripcion}"
+
 
 class Notificacion(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    mensaje = models.CharField(max_length=255)
-    leido = models.BooleanField(default=False)
-    fecha = models.DateTimeField(auto_now_add=True)
+    mensaje = models.TextField()
+    fecha_envio = models.DateTimeField(auto_now_add=True)
+    estado = models.CharField(max_length=50)  # leída, no leída
 
     def __str__(self):
-        return f"Notificación a {self.usuario}"
-
-class Historial(models.Model):
-    usuario = models.CharField(max_length=100)
-    actividad = models.CharField(max_length=210)
-    fecha = models.DateField()
-    resultado = models.TextField()
-    logo = models.FileField(upload_to='cargos', null=True, blank=True)
-    archivo = models.FileField(upload_to='documentos/', null=True, blank=True)
-
-    def __str__(self):
-        return f"{self.usuario} - {self.actividad} - {self.fecha}"
+        return f"Notificación para {self.usuario}"
