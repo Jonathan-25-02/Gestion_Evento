@@ -1,0 +1,87 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light">
+        <h1>Actualizar Usuario</h1>
+        <form action="/procesarEdicionUsuario/{{ usuarioEditar.id }}" enctype="multipart/form-data" method="POST" id="frm-nuevo_usuario">
+            {% csrf_token %}
+
+            <label for="nombre_completo" class="form-label">Nombre Completo</label>
+            <input type="text" class="form-control" id="nombre_completo" name="nombre_completo" value="{{ usuarioEditar.nombre_completo }}" required>
+
+            <label for="correo" class="form-label">Correo Electrónico</label>
+            <input type="email" class="form-control" id="correo" name="correo" value="{{ usuarioEditar.correo }}" required>
+
+
+            <label for="tipo" class="form-label">Tipo</label>
+            <select class="form-select" id="tipo" name="tipo" required>
+                <option value="">Seleccione</option>
+                <option value="estudiante">Estudiante</option>
+                <option value="profesor">Profesor</option>
+                <option value="administrativo">Administrativo</option>
+            </select>
+
+            <label for="carrera" class="form-label">Carrera</label>
+            <select class="form-select" id="carrera" name="carrera" required>
+                <option value="">Seleccione una carrera</option>
+                {% for carrera in carreras %}
+                    <option value="{{ carrera.id }}">{{ carrera.nombre }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="semestre" class="form-label">Semestre</label>
+            <input type="number" class="form-control" id="semestre" name="semestre" value="{{ usuarioEditar.semestre }}" required>
+
+            <button class="btn btn-success" type="submit">Guardar</button>
+            <a class="btn btn-outline-danger" href="/usuario">Cancelar</a>
+
+        <script>
+            $("#frm-nuevo_usuario").validate({
+                rules: {
+                    nombre_completo: {
+                        required: true,
+                        minlength: 10
+                    },
+                    correo: {
+                        required: true,
+                        email: true
+                    },
+                    tipo: {
+                        required: true
+                    },
+                    carrera: {
+                        required: true
+                    },
+                    semestre: {
+                        required: true,
+                        digits: true
+                    }
+                },
+                messages: {
+                    nombre_completo: {
+                        required: "El nombre completo es obligatorio",
+                        minlength: "El nombre debe tener al menos 10 caracteres"
+                    },
+                    correo: {
+                        required: "El correo electrónico es obligatorio",
+                        email: "El correo electrónico debe ser válido"
+                    },
+                    tipo: {
+                        required: "Seleccione un tipo"
+                    },
+                    carrera: {
+                        required: "La carrera es obligatoria"
+                    },
+                    semestre: {
+                        required: "El semestre es obligatorio",
+                        digits: "El semestre debe ser un número"
+                    }
+                }
+            });
+        </script>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+
+{% endblock %}

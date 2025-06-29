@@ -56,31 +56,61 @@ def usuario(request):
 
 
 def nuevoUsuario(request):
-    return render(request, "nuevoUsuario.html")
+    carreras = Carrera.objects.all()
+    return render(request, "nuevoUsuario.html", {'carreras': carreras})
 
+
+from django.shortcuts import get_object_or_404
+from .models import Usuario, Carrera  # Asegúrate de importar Carrera
 
 def guardarUsuario(request):
-    # Aquí debes adaptar según los campos reales del modelo
+    nombre_completo = request.POST["nombre_completo"]
+    correo = request.POST["correo"]
+    tipo = request.POST["tipo"]
+    carrera_id = request.POST["carrera"]  # Aquí recibes el ID, no el nombre
+    semestre = request.POST["semestre"]
+
+    carrera_obj = get_object_or_404(Carrera, id=carrera_id)  # 🔥 Aquí obtienes la instancia
+
+    nuevoUsuario = Usuario.objects.create(
+        nombre_completo=nombre_completo,
+        correo=correo,
+        tipo=tipo,
+        carrera=carrera_obj,  # ✅ Asignas el objeto Carrera, no un string
+        semestre=semestre
+    )
     messages.success(request, "Usuario guardado exitosamente")
     return redirect('/usuario')
 
 
+
 def eliminarUsuario(request, id):
-    registro = get_object_or_404(Usuario, id=id)
-    registro.delete()
-    messages.success(request, "Usuario eliminado exitosamente")
+    usuarioEliminar = get_object_or_404(Usuario, id=id)
+    usuarioEliminar.delete()
+
     return redirect('/usuario')
 
 
 def editarUsuario(request, id):
-    registro = get_object_or_404(Usuario, id=id)
-    return render(request, "editarUsuario.html", {'usuario': registro})
-
+    usuarioEditar = get_object_or_404(Usuario, id=id)
+    carreras = Carrera.objects.all()
+    return render(request, "editarUsuario.html", {
+        'usuarioEditar': usuarioEditar,
+        'carreras': carreras
+    })
 
 def procesarEdicionUsuario(request, id):
-    # Aquí debes adaptar según los campos reales del modelo
-    registro = get_object_or_404(Usuario, id=id)
-    registro.save()
+    usuarioEditar = get_object_or_404(Usuario, id=id)
+    usuarioEditar.nombre_completo = request.POST["nombre_completo"]
+    usuarioEditar.correo = request.POST["correo"]
+    usuarioEditar.tipo = request.POST["tipo"]
+
+    carrera_id = request.POST["carrera"]
+    carrera_obj = get_object_or_404(Carrera, id=carrera_id)  # ✅ esto es importante
+    usuarioEditar.carrera = carrera_obj  # ✅
+
+    usuarioEditar.semestre = request.POST["semestre"]
+    usuarioEditar.save()
     messages.success(request, "Usuario actualizado exitosamente")
     return redirect('/usuario')
 

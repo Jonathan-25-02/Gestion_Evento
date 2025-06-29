@@ -23,7 +23,12 @@
             </select>
 
             <label for="carrera" class="form-label">Carrera</label>
-            <input type="text" class="form-control" id="carrera" name="carrera" required>
+            <select class="form-select" id="carrera" name="carrera" required>
+                <option value="">Seleccione una carrera</option>
+                {% for carrera in carreras %}
+                    <option value="{{ carrera.id }}">{{ carrera.nombre }}</option>
+                {% endfor %}
+            </select>
 
             <label for="semestre" class="form-label">Semestre</label>
             <input type="number" class="form-control" id="semestre" name="semestre" required>
