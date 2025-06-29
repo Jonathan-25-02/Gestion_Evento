@@ -1,0 +1,40 @@
+{% extends "plantilla.html" %}
+{% block contenido%}
+
+    <div class="row">
+        <div class="col-md-3 "> </div><br>
+        <div class="col-md-6 bg-light">
+            <h1>Agregar Nueva Carrera</h1>
+            <form action="/guardarCarrera" enctype="multipart/form-data" method="post" id="frm-nueva_carrera">
+                {% csrf_token %}
+
+                <label for="nombre">Nombre de la Carrera</label> <br>
+                <input placeholder="Ingrese el nombre de la carrera" type="text" class="form-control" name="nombre" id="nombre" required> <br>
+
+                <button class="btn btn-success" type="submit">Guardar</button>
+                <a class="btn btn-outline-danger" href="/">Cancelar</a>
+
+            <script>
+                $("#frm_nueva_carrera").validate({
+                    rules: {
+                        nombre: {
+                            required: true,
+                            minlength: 3
+                        }
+                    },
+                    messages: {
+                        nombre: {
+                            required: "El nombre es obligatorio",
+                            minlength: "El nombre debe tener al menos 3 caracteres"
+                        }
+                    }
+                })
+            </script>
+            </form>
+        </div>
+        <div class="col-md-3 "> </div>
+    </div>
+
+
+
+{% endblock %}

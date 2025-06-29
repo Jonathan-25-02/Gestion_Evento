@@ -1,0 +1,42 @@
+{% extends "plantilla.html" %}
+{% block contenido%}
+
+<div class="row">
+    <div class="col-md-3"> </div>
+    <div class="col-md-6 bg-light">
+        <h1>Actualizar Nueva Carrera</h1>
+        <form action="{% url 'procesarEdicionCarrera' carreraEditar.id %}" enctype="multipart/form-data" method="post" id="frm_editar_carrera">
+            {% csrf_token %}
+
+            <label for="nombre">Nombre de la Carrera</label>
+            <input type="text" class="form-control" name="nombre" id="nombre" value="{{ carreraEditar.nombre }}" required><br>
+
+            <button class="btn btn-warning" type="submit">
+                <i class="fa fa-pen"></i> Editar
+            </button>
+            <a class="btn btn-outline-danger" href="/carrera">
+                <i class="fa fa-times"></i> Cancelar
+            </a>
+        </form>
+    </div>
+    <div class="col-md-3"> </div>
+</div>
+
+<script>
+    $("#frm_editar_carrera").validate({
+        rules: {
+            nombre: {
+                required: true,
+                minlength: 3
+            }
+        },
+        messages: {
+            nombre: {
+                required: "El nombre es obligatorio",
+                minlength: "El nombre debe tener al menos 3 caracteres"
+            }
+        }
+    });
+</script>
+
+{% endblock %}

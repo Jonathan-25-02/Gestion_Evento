@@ -20,27 +20,30 @@ def nuevoCarrera(request):
 
 
 def guardarCarrera(request):
-    # Aquí debes adaptar según los campos reales del modelo
+    nombre = request.POST["nombre"]
+    nuevaCarrera = Carrera.objects.create(nombre=nombre)
     messages.success(request, "Carrera guardado exitosamente")
     return redirect('/carrera')
 
 
 def eliminarCarrera(request, id):
-    registro = get_object_or_404(Carrera, id=id)
-    registro.delete()
-    messages.success(request, "Carrera eliminado exitosamente")
+    carreraEliminar = get_object_or_404(Carrera, id=id)
+    carreraEliminar.delete()
+
     return redirect('/carrera')
 
 
 def editarCarrera(request, id):
-    registro = get_object_or_404(Carrera, id=id)
-    return render(request, "editarCarrera.html", {'carrera': registro})
+    carreraEditar = get_object_or_404(Carrera, id=id)
+    return render(request, "editarCarrera.html", {'carreraEditar': carreraEditar})
 
 
 def procesarEdicionCarrera(request, id):
+    nombre = request.POST["nombre"]
     # Aquí debes adaptar según los campos reales del modelo
-    registro = get_object_or_404(Carrera, id=id)
-    registro.save()
+    carreraEditar = get_object_or_404(Carrera, id=id)
+    carreraEditar.nombre = nombre
+    carreraEditar.save()
     messages.success(request, "Carrera actualizado exitosamente")
     return redirect('/carrera')
 
@@ -126,8 +129,8 @@ def modalidadevento(request):
     return render(request, "modalidadevento.html", {'modalidadeventos': registros})
 
 
-def nuevoModalidadEvento(request):
-    return render(request, "nuevoModalidadEvento.html")
+def nuevaModalidadEvento(request):
+    return render(request, "nuevaModalidadEvento.html")
 
 
 def guardarModalidadEvento(request):
@@ -163,8 +166,8 @@ def inscripcion(request):
     return render(request, "inscripcion.html", {'inscripcions': registros})
 
 
-def nuevoInscripcion(request):
-    return render(request, "nuevoInscripcion.html")
+def nuevaInscripcion(request):
+    return render(request, "nuevaInscripcion.html")
 
 
 def guardarInscripcion(request):
@@ -274,8 +277,8 @@ def asistencia(request):
     return render(request, "asistencia.html", {'asistencias': registros})
 
 
-def nuevoAsistencia(request):
-    return render(request, "nuevoAsistencia.html")
+def nuevaAsistencia(request):
+    return render(request, "nuevaAsistencia.html")
 
 
 def guardarAsistencia(request):
@@ -348,8 +351,8 @@ def notificacion(request):
     return render(request, "notificacion.html", {'notificacions': registros})
 
 
-def nuevoNotificacion(request):
-    return render(request, "nuevoNotificacion.html")
+def nuevaNotificacion(request):
+    return render(request, "nuevaNotificacion.html")
 
 
 def guardarNotificacion(request):
