@@ -127,7 +127,26 @@ def nuevoEvento(request):
 
 
 def guardarEvento(request):
-    # Aquí debes adaptar según los campos reales del modelo
+    nombre = request.POST["nombre"]
+    descripcion = request.POST["descripcion"]
+    fecha_inicio = request.POST["fecha_inicio"]
+    fecha_fin = request.POST["fecha_fin"]
+    cupos = request.POST["cupos"]
+    modalidad_id = request.POST["modalidad"]
+    organizador_id = request.POST["organizador"]
+
+    modalidad = get_object_or_404(ModalidadEvento, id=modalidad_id)
+    organizador = get_object_or_404(Usuario, id=organizador_id)
+
+    nuevoEvento = Evento.objects.create(
+        nombre=nombre,
+        descripcion=descripcion,
+        fecha_inicio=fecha_inicio,
+        fecha_fin=fecha_fin,
+        cupos=cupos,
+        modalidad=modalidad,
+        organizador=organizador
+    )
     messages.success(request, "Evento guardado exitosamente")
     return redirect('/evento')
 
@@ -145,8 +164,22 @@ def editarEvento(request, id):
 
 
 def procesarEdicionEvento(request, id):
-    # Aquí debes adaptar según los campos reales del modelo
+    nombre = request.POST["nombre"]
+    descripcion = request.POST["descripcion"]
+    fecha_inicio = request.POST["fecha_inicio"]
+    fecha_fin = request.POST["fecha_fin"]
+    cupos = request.POST["cupos"]
+    modalidad_id = request.POST["modalidad"]
+    organizador_id = request.POST["organizador"]
+
     registro = get_object_or_404(Evento, id=id)
+    registro.nombre = nombre
+    registro.descripcion = descripcion
+    registro.fecha_inicio = fecha_inicio
+    registro.fecha_fin = fecha_fin
+    registro.cupos = cupos
+    registro.modalidad = get_object_or_404(ModalidadEvento, id=modalidad_id)
+    registro.organizador = get_object_or_404(Usuario, id=organizador_id)
     registro.save()
     messages.success(request, "Evento actualizado exitosamente")
     return redirect('/evento')
