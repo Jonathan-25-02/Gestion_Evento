@@ -1,0 +1,39 @@
+{% extends "./plantilla.html" %}
+{% block contenido %}
+
+    <div class="row ">
+        <div class="col-md-3 "> </div><br>
+        <div class="col-md-6 bg-light"> 
+
+            <h1>Crear Nueva Modalidad del Evento</h1>
+            <form action="/guardarModalidadEvento" method="POST" enctype="multipart/form-data" id="frm-nueva_modalidad_evento">
+                {% csrf_token %}
+
+                <label for="tipo" class="form-label">Tipo de Modalidad</label>
+                <input placeholder="Ingrese el tipo de modalidad: Presencial, Semipresencial, Virtual" type="text" class="form-control" id="tipo" name="tipo" required>
+
+                <button class="btn btn-success" type="submit">Guardar</button>
+                <a class="btn btn-outline-danger" href="/">Cancelar</a>
+
+            <script>
+                $("#frm-nueva_modalidad_evento").validate({
+                    rules: {
+                        tipo: {
+                            required: true,
+                            minlength: 5
+                        }
+                    },
+                    messages: {
+                        tipo: {
+                            required: "El campo tipo es obligatorio",
+                            minlength: "El tipo debe tener al menos 5 caracteres"
+                        }
+                    }
+                });
+            </script>
+            </form>
+
+        </div>
+        <div class="col-md-3 "> </div>
+    </div>
+{% endblock %}

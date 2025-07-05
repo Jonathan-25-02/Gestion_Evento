@@ -1,112 +1,115 @@
 {% extends './plantilla.html' %}
 {% block contenido %}
 
-<div class = "row">
-    <div class="col-md-3">
-    <div class = "col-md-6 bg-light">
-        <h4>Nuevo Evento</h4>
-        <form action="/guardarEvento" enctype="multipart/form-data" method="POST" id ="frm_nuevo_evento">
-            {% csrf_token %}
+    <div class = "row">
+        <div class = "col-md-3"> </div>
+        <div class = "col-md-6 bg-light">
+            <h4>Nuevo Evento</h4>
 
-            
-            <label for="nombre">Nombre</label>
-            <input placeholder = "Ingrese el nombre" type="text" class="form-control" id="nombre" name="nombre" required>
+            <form action="/guardarEvento" enctype="multipart/form-data" method="POST" id ="frm_nuevo_evento">
+                {% csrf_token %}
 
-            <label for="descripcion">Descripción</label>
-            <textarea placeholder = "Ingrese la descripción" class="form-control" id="descripcion" name="descripcion" required></textarea>
+                
+                <label for="nombre">Nombre</label>
+                <input placeholder = "Ingrese el nombre" type="text" class="form-control" id="nombre" name="nombre" required>
 
-            <label for="fecha_inicio">Fecha de inicio</label>
-            <input placeholder = "Ingrese la fecha de inicio" type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
+                <label for="descripcion">Descripción</label>
+                <textarea placeholder = "Ingrese la descripción" class="form-control" id="descripcion" name="descripcion" required></textarea>
 
-
-            <label for="fecha_fin">Fecha de fin</label>
-            <input placeholder = "Ingrese la fecha de fin" type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
-
-            <label for="cupos">Cupos</label>
-            <input placeholder = "Ingrese la cantidad de cupos" type="number" class="form-control" id="cupos" name="cupos" required>
-
-            <label for="modalidad" class="form-label">Modalidad</label>
-            <select class="form-select" id="modalidad" name="modalidad" required>
-                <option value="">Seleccione una modalidad</option>
-                {% for modalidad in modalidades %}
-                    <option value="{{ modalidad.id }}">{{ modalidad.nombre }}</option>
-                {% endfor %}
-            </select>
-
-            <label for="organizador" class="form-label">Organizador</label>
-            <select class="form-select" id="organizador" name="organizador" required>
-                <option value="">Seleccione un organizador</option>
-                {% for organizador in organizadores %}
-                    <option value="{{ organizador.id }}">{{ organizador.nombre }}</option>
-                {% endfor %}
-            </select>
+                <label for="fecha_inicio">Fecha de inicio</label>
+                <input placeholder = "Ingrese la fecha de inicio" type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
 
 
-            <button class="btn btn-success" type="submit">Guardar</button>
-            <a class="btn btn-outline-danger" href="/">Cancelar</a>
+                <label for="fecha_fin">Fecha de fin</label>
+                <input placeholder = "Ingrese la fecha de fin" type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
 
-        <script>
-            $("#frm_nuevo_evento").validate({
-                rules: {
-                    nombre: {
-                        required: true,
-                        minlength: 3
+                <label for="cupos">Cupos</label>
+                <input placeholder = "Ingrese la cantidad de cupos" type="number" class="form-control" id="cupos" name="cupos" required>
+
+                <label>Modalidad</label>
+                <select class="form-control" id="modalidad" name="modalidad" required>
+                    <option value="" disable selected>Seleccione una modalidad</option>
+                    {% for modalidad in modalidades %}
+                        <option value="{{ modalidad.id }}">{{ modalidad.tipo }}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Organizador</label>
+                <select class="form-control" id="organizador" name="organizador" required>
+                    <option value="" disable selected>Seleccione un organizador</option>
+                    {% for organizador in organizadores %}
+                        <option value="{{ organizador.id }}">{{ organizador.nombre_completo }}</option>
+                    {% endfor %}
+                </select>
+
+
+                <button class="btn btn-success" type="submit">Guardar</button>
+                <a class="btn btn-outline-danger" href="/">Cancelar</a>
+
+            <script>
+                $("#frm_nuevo_evento").validate({
+                    rules: {
+                        nombre: {
+                            required: true,
+                            minlength: 3
+                        },
+                        descripcion: {
+                            required: true,
+                            minlength: 10
+                        },
+                        fecha_inicio: {
+                            required: true,
+                            date: true
+                        },
+                        fecha_fin: {
+                            required: true,
+                            date: true
+                        },
+                        cupos: {
+                            required: true,
+                            digits: true
+                        },
+                        modalidad: {
+                            required: true
+                        },
+                        organizador: {
+                            required: true
+                        }
                     },
-                    descripcion: {
-                        required: true,
-                        minlength: 10
-                    },
-                    fecha_inicio: {
-                        required: true,
-                        date: true
-                    },
-                    fecha_fin: {
-                        required: true,
-                        date: true
-                    },
-                    cupos: {
-                        required: true,
-                        digits: true
-                    },
-                    modalidad: {
-                        required: true
-                    },
-                    organizador: {
-                        required: true
+                    messages: {
+                        nombre: {
+                            required: "El nombre es obligatorio",
+                            minlength: "El nombre debe tener al menos 3 caracteres"
+                        },
+                        descripcion: {
+                            required: "La descripción es obligatoria",
+                            minlength: "La descripción debe tener al menos 10 caracteres"
+                        },
+                        fecha_inicio: {
+                            required: "La fecha de inicio es obligatoria",
+                            date: "Ingrese una fecha válida"
+                        },
+                        fecha_fin: {
+                            required: "La fecha de fin es obligatoria",
+                            date: "Ingrese una fecha válida"
+                        },
+                        cupos: {
+                            required: "Los cupos son obligatorios",
+                            digits: "Los cupos deben ser un número entero"
+                        },
+                        modalidad: {
+                            required: "Seleccione una modalidad"
+                        },
+                        organizador: {
+                            required: "Seleccione un organizador"
+                        }
                     }
-                },
-                messages: {
-                    nombre: {
-                        required: "El nombre es obligatorio",
-                        minlength: "El nombre debe tener al menos 3 caracteres"
-                    },
-                    descripcion: {
-                        required: "La descripción es obligatoria",
-                        minlength: "La descripción debe tener al menos 10 caracteres"
-                    },
-                    fecha_inicio: {
-                        required: "La fecha de inicio es obligatoria",
-                        date: "Ingrese una fecha válida"
-                    },
-                    fecha_fin: {
-                        required: "La fecha de fin es obligatoria",
-                        date: "Ingrese una fecha válida"
-                    },
-                    cupos: {
-                        required: "Los cupos son obligatorios",
-                        digits: "Los cupos deben ser un número entero"
-                    },
-                    modalidad: {
-                        required: "Seleccione una modalidad"
-                    },
-                    organizador: {
-                        required: "Seleccione un organizador"
-                    }
-                }
-            });
-        </script>
-        </form>
+                });
+            </script>
+            </form>
+
+        </div>
+        <div class="col-md-3"></div>
     </div>
-    <div class="col-md-3"></div>
 
-</div>
+{% endblock %}

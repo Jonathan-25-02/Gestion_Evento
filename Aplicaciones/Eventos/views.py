@@ -60,8 +60,6 @@ def nuevoUsuario(request):
     return render(request, "nuevoUsuario.html", {'carreras': carreras})
 
 
-from django.shortcuts import get_object_or_404
-from .models import Usuario, Carrera  # Asegúrate de importar Carrera
 
 def guardarUsuario(request):
     nombre_completo = request.POST["nombre_completo"]
@@ -118,12 +116,14 @@ def procesarEdicionUsuario(request, id):
 
 # Vistas para Evento
 def evento(request):
-    registros = Evento.objects.all()
-    return render(request, "evento.html", {'eventos': registros})
+    eventos = Evento.objects.all()
+    return render(request, "evento.html", {'eventos': eventos})
 
 
 def nuevoEvento(request):
-    return render(request, "nuevoEvento.html")
+    modalidades = ModalidadEvento.objects.all()
+    organizadores = Usuario.objects.filter(tipo='docente')  # Asumiendo que los docentes son los organizadores
+    return render(request, "nuevoEvento.html", {'modalidades': modalidades, 'organizadores': organizadores})
 
 
 def guardarEvento(request):
@@ -134,11 +134,10 @@ def guardarEvento(request):
     cupos = request.POST["cupos"]
     modalidad_id = request.POST["modalidad"]
     organizador_id = request.POST["organizador"]
+    modalidad = ModalidadEvento.objects.get(id=modalidad_id)
+    organizador = Usuario( id=organizador_id)
 
-    modalidad = get_object_or_404(ModalidadEvento, id=modalidad_id)
-    organizador = get_object_or_404(Usuario, id=organizador_id)
-
-    nuevoEvento = Evento.objects.create(
+    nuevoevento = Evento.objects.create(
         nombre=nombre,
         descripcion=descripcion,
         fecha_inicio=fecha_inicio,
@@ -152,15 +151,21 @@ def guardarEvento(request):
 
 
 def eliminarEvento(request, id):
-    registro = get_object_or_404(Evento, id=id)
-    registro.delete()
+    evento = get_object_or_404(Evento, id=id)
+    evento.delete()
     messages.success(request, "Evento eliminado exitosamente")
     return redirect('/evento')
 
 
 def editarEvento(request, id):
-    registro = get_object_or_404(Evento, id=id)
-    return render(request, "editarEvento.html", {'evento': registro})
+    eventoEditar = get_object_or_404(Evento, id=id)
+    modalidades = ModalidadEvento.objects.all()
+    organizadores = Usuario.objects.filter(tipo='docente')  # Asumiendo que los docentes son los organizadores
+    return render(request, "editarEvento.html", {
+        'eventoEditar': eventoEditar,
+        'modalidades': modalidades,
+        'organizadores': organizadores
+    })
 
 
 def procesarEdicionEvento(request, id):
@@ -172,15 +177,15 @@ def procesarEdicionEvento(request, id):
     modalidad_id = request.POST["modalidad"]
     organizador_id = request.POST["organizador"]
 
-    registro = get_object_or_404(Evento, id=id)
-    registro.nombre = nombre
-    registro.descripcion = descripcion
-    registro.fecha_inicio = fecha_inicio
-    registro.fecha_fin = fecha_fin
-    registro.cupos = cupos
-    registro.modalidad = get_object_or_404(ModalidadEvento, id=modalidad_id)
-    registro.organizador = get_object_or_404(Usuario, id=organizador_id)
-    registro.save()
+    eventoEditar = get_object_or_404(Evento, id=id)
+    eventoEditar.nombre = nombre
+    eventoEditar.descripcion = descripcion
+    eventoEditar.fecha_inicio = fecha_inicio
+    eventoEditar.fecha_fin = fecha_fin
+    eventoEditar.cupos = cupos
+    eventoEditar.modalidad = get_object_or_404(ModalidadEvento, id=modalidad_id)
+    eventoEditar.organizador = get_object_or_404(Usuario, id=organizador_id)
+    eventoEditar.save()
     messages.success(request, "Evento actualizado exitosamente")
     return redirect('/evento')
 
@@ -189,7 +194,7 @@ def procesarEdicionEvento(request, id):
 # Vistas para ModalidadEvento
 def modalidadevento(request):
     registros = ModalidadEvento.objects.all()
-    return render(request, "modalidadevento.html", {'modalidadeventos': registros})
+    return render(request, "modalidadevento.html", {'modalidad_eventos': registros})
 
 
 def nuevaModalidadEvento(request):
@@ -197,8 +202,11 @@ def nuevaModalidadEvento(request):
 
 
 def guardarModalidadEvento(request):
-    # Aquí debes adaptar según los campos reales del modelo
-    messages.success(request, "ModalidadEvento guardado exitosamente")
+    tipo = request.POST["tipo"]
+    nuevoModalidad = ModalidadEvento.objects.create(
+        tipo=tipo
+    )
+    messages.success(request, "Modalidad del Evento guardado exitosamente")
     return redirect('/modalidadevento')
 
 
@@ -210,13 +218,14 @@ def eliminarModalidadEvento(request, id):
 
 
 def editarModalidadEvento(request, id):
-    registro = get_object_or_404(ModalidadEvento, id=id)
-    return render(request, "editarModalidadEvento.html", {'modalidadevento': registro})
+    modalidadEventoEditar = get_object_or_404(ModalidadEvento, id=id)
+    return render(request, "editarModalidadEvento.html", {'modalidadevento': modalidadEventoEditar})
 
 
 def procesarEdicionModalidadEvento(request, id):
-    # Aquí debes adaptar según los campos reales del modelo
+    tipo = request.POST["tipo"]
     registro = get_object_or_404(ModalidadEvento, id=id)
+    registro.tipo = tipo
     registro.save()
     messages.success(request, "ModalidadEvento actualizado exitosamente")
     return redirect('/modalidadevento')

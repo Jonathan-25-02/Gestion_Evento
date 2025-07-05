@@ -1,0 +1,43 @@
+{% extends "./plantilla.html" %}
+{% block contenido %}
+
+    <div class="row ">
+        <div class="col-md-3 "> </div><br>
+        <div class="col-md-6 bg-light"> 
+
+            <h1>Actualizar Modalidad del Evento</h1>
+            <form action="/procesarEdicionModalidadEvento/{{modalidadEventoEditar.id}}" method="POST" enctype="multipart/form-data" id="frm-nueva_modalidad_evento">
+                {% csrf_token %}
+
+                <label for="tipo" class="form-label">Tipo de Modalidad</label>
+                <input placeholder="Ingrese el tipo de modalidad: Presencial, Semipresencial, Virtual" type="text" class="form-control" id="tipo" name="tipo" required value="{{modalidadEventoEditar.tipo}}">
+
+                <button class="btn btn-warning" type="submit">
+                    <i class="fa fa-pen"></i>
+                    Editar</button>
+                <a class="btn btn-outline-danger" href="/">
+                    <i class="fa fa-times"></i>
+                    Cancelar</a>
+
+            <script>
+                $("#frm-nueva_modalidad_evento").validate({
+                    rules: {
+                        tipo: {
+                            required: true,
+                            minlength: 5
+                        }
+                    },
+                    messages: {
+                        tipo: {
+                            required: "El campo tipo es obligatorio",
+                            minlength: "El tipo debe tener al menos 5 caracteres"
+                        }
+                    }
+                });
+            </script>
+            </form>
+
+        </div>
+        <div class="col-md-3 "> </div>
+    </div>
+{% endblock %}
