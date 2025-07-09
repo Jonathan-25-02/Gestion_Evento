@@ -1,0 +1,82 @@
+{% extends './plantilla.html'%}
+{% block contenido %}
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light">
+
+        <h1>Inscripción del Evento</h1>
+        <form action="/guardarInscripcion" enctype="multipart/form-data" method="POST" id="frm_nueva_inscripcion">
+
+            {% csrf_token %}
+
+            <label for="usuario" class="form-label">Usuario</label>
+            <select class="form-select" id="usuario" name="usuario" required>
+                <option value="">Seleccione un usuario</option>
+                {% for usuario in usuarios %}
+                    <option value="{{ usuario.id }}">{{ usuario.nombre_completo }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="evento" class="form-label">Evento</label>
+            <select class="form-select" id="evento" name="evento" required>
+                <option value="">Seleccione un evento</option>
+                {% for evento in eventos %}
+                    <option value="{{ evento.id }}">{{ evento.nombre }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="estado" class="form-label">Estado</label>
+            <select class="form-select" id="estado" name="estado" required>
+                <option value="">Seleccione un estado</option>
+                {% for estado in estados %}
+                    <option value="{{ estado.id }}">{{ estado.nombre }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="fecha_inscripcion" class="form-label">Fecha de Inscripción</label>
+            <input type="date" class="form-control" id="fecha_inscripcion" name="fecha_inscripcion"  placeholder="Seleccione una fecha" required>
+
+            <button class="btn btn-success" type="submit">Guardar</button>
+            <a class="btn btn-outline-danger" href="/inscripcion">Cancelar</a>
+
+        <script>
+            $("#frm_nueva_inscripcion").validate({
+                rules: {
+                    evento: {
+                        required: true
+                    },
+                    usuario: {
+                        required: true
+                    }
+                    estado: {
+                        required: true
+                    }
+                    fecha_inscripcion: {
+                        required: true,
+                        date: true
+                    }
+                },
+                messages: {
+                    evento: {
+                        required: "El evento es obligatorio"
+                    },
+                    usuario: {
+                        required: "El usuario es obligatorio"
+                    },
+                    estado: {
+                        required: "El estado es obligatorio"
+                    },
+                    fecha_inscripcion: {
+                        required: "La fecha de inscripción es obligatoria",
+                        date: "Por favor, ingrese una fecha válida"
+                    }
+                }
+            });
+
+        </script>
+        </form>
+
+    </div>
+    <div class="col-md-3"></div>
+</div>
+{% endblock %}

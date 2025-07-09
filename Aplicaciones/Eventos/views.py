@@ -219,6 +219,7 @@ def eliminarModalidadEvento(request, id):
 
 def editarModalidadEvento(request, id):
     modalidadEventoEditar = get_object_or_404(ModalidadEvento, id=id)
+
     return render(request, "editarModalidadEvento.html", {'modalidadevento': modalidadEventoEditar})
 
 
@@ -234,36 +235,70 @@ def procesarEdicionModalidadEvento(request, id):
 
 # Vistas para Inscripcion
 def inscripcion(request):
-    registros = Inscripcion.objects.all()
-    return render(request, "inscripcion.html", {'inscripcions': registros})
+    inscripciones = Inscripcion.objects.all()
+    return render(request, "inscripcion.html", {'inscripciones': inscripciones})
 
 
 def nuevaInscripcion(request):
-    return render(request, "nuevaInscripcion.html")
+    usuarios = Usuario.objects.all()
+    eventos = Evento.objects.all()
+    estados = EstadoInscripcion.objects.all()
+    return render(request, "nuevaInscripcion.html", {
+        'usuarios': usuarios,
+        'eventos': eventos,
+        'estados': estados
+    })
 
 
 def guardarInscripcion(request):
     # Aquí debes adaptar según los campos reales del modelo
+    usuario_id = request.POST["usuario"]
+    evento_id = request.POST["evento"]
+    estado_id = request.POST["estado"]
+    fecha_inscripcion = request.POST["fecha_inscripcion"]
+
+    nuevaInscripcion = Inscripcion.objects.create(
+        usuario_id=usuario_id,
+        evento_id=evento_id,
+        estado_id=estado_id,
+        fecha_inscripcion=fecha_inscripcion
+    )
     messages.success(request, "Inscripcion guardado exitosamente")
     return redirect('/inscripcion')
 
 
 def eliminarInscripcion(request, id):
-    registro = get_object_or_404(Inscripcion, id=id)
-    registro.delete()
+    inscripcionEliminar = get_object_or_404(Inscripcion, id=id)
+    inscripcionEliminar.delete()
     messages.success(request, "Inscripcion eliminado exitosamente")
     return redirect('/inscripcion')
 
 
 def editarInscripcion(request, id):
-    registro = get_object_or_404(Inscripcion, id=id)
-    return render(request, "editarInscripcion.html", {'inscripcion': registro})
+    inscripcionEditar = get_object_or_404(Inscripcion, id=id)
+    usuarios = Usuario.objects.all()
+    eventos = Evento.objects.all()
+    estados = EstadoInscripcion.objects.all()
+    return render(request, "editarInscripcion.html", {
+        'inscripcion': inscripcionEditar,
+        'usuarios': usuarios,
+        'eventos': eventos,
+        'estados': estados
+    })
 
 
 def procesarEdicionInscripcion(request, id):
     # Aquí debes adaptar según los campos reales del modelo
-    registro = get_object_or_404(Inscripcion, id=id)
-    registro.save()
+    usuario = request.POST["usuario"]
+    evento = request.POST["evento"]
+    estado = request.POST["estado"]
+    fecha_inscripcion = request.POST["fecha_inscripcion"]
+    inscripcion = get_object_or_404(Inscripcion, id=id)
+    inscripcion.usuario = usuario
+    inscripcion.evento = evento
+    inscripcion.estado = estado
+    inscripcion.fecha_inscripcion = fecha_inscripcion
+    inscripcion.save()
     messages.success(request, "Inscripcion actualizado exitosamente")
     return redirect('/inscripcion')
 
@@ -272,7 +307,7 @@ def procesarEdicionInscripcion(request, id):
 # Vistas para EstadoInscripcion
 def estadoinscripcion(request):
     listadoEstadoInscripcion = EstadoInscripcion.objects.all()
-    return render(request, "estadoinscripcion.html", {'estadoInscripciones': listadoEstadoInscripcion})
+    return render(request, "estadoinscripcion.html", {'Inscripciones': listadoEstadoInscripcion})
 
 
 def nuevoEstadoInscripcion(request):
