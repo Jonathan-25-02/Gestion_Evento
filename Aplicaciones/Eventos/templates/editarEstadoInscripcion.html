@@ -1,0 +1,51 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light">
+
+        <h1>Nueva Inscripción</h1>
+        <form action="/procesarEdicionEstadoInscripcion/{{estadoInscripcionEditar.id}}" enctype="multipart/form-data" method="POST" id="frm_nueva_estado_inscripcion">
+            {% csrf_token %}
+
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese el estado de inscripcion pendiente, aceptado, rechazado " required value ="{{estadoInscripcionEditar.nombre}}">
+
+            <br>
+
+            <button class="btn btn-warning" type="submit">
+                <i class="fa fa-pen"></i>
+                Editar</button>
+            <a class="btn btn-outline-danger" href="/estadoinscripcion">
+                <i class="fa fa-times"></i>
+                Cancelar</a>
+        
+
+        <script>
+            $("#frm_nueva_estado_inscripcion").validate({
+                rules: {
+                    nombre: {
+                        required: true,
+                        minlength: 3
+                    },
+                    evento: {
+                        required: true
+                    }
+                },
+                messages: {
+                    nombre: {
+                        required: "El nombre es obligatorio",
+                        minlength: "El nombre debe tener al menos 3 caracteres"
+                    },
+                    evento: {
+                        required: "El evento es obligatorio"
+                    }
+                }
+            });
+        </script>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+
+{% endblock %}

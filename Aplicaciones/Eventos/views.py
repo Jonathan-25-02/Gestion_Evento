@@ -271,8 +271,8 @@ def procesarEdicionInscripcion(request, id):
 
 # Vistas para EstadoInscripcion
 def estadoinscripcion(request):
-    registros = EstadoInscripcion.objects.all()
-    return render(request, "estadoinscripcion.html", {'estadoinscripcions': registros})
+    listadoEstadoInscripcion = EstadoInscripcion.objects.all()
+    return render(request, "estadoinscripcion.html", {'estadoInscripciones': listadoEstadoInscripcion})
 
 
 def nuevoEstadoInscripcion(request):
@@ -280,27 +280,30 @@ def nuevoEstadoInscripcion(request):
 
 
 def guardarEstadoInscripcion(request):
-    # Aquí debes adaptar según los campos reales del modelo
+    nombre = request.POST["nombre"]
+    nuevoEstadoInscripcion = EstadoInscripcion.objects.create(nombre=nombre)
+
     messages.success(request, "EstadoInscripcion guardado exitosamente")
     return redirect('/estadoinscripcion')
 
 
 def eliminarEstadoInscripcion(request, id):
-    registro = get_object_or_404(EstadoInscripcion, id=id)
-    registro.delete()
+    estadoInscripcionEliminar = get_object_or_404(EstadoInscripcion, id=id)
+    estadoInscripcionEliminar.delete()
     messages.success(request, "EstadoInscripcion eliminado exitosamente")
     return redirect('/estadoinscripcion')
 
 
 def editarEstadoInscripcion(request, id):
-    registro = get_object_or_404(EstadoInscripcion, id=id)
-    return render(request, "editarEstadoInscripcion.html", {'estadoinscripcion': registro})
+    estadoInscripcionEditar = get_object_or_404(EstadoInscripcion, id=id)
+    return render(request, "editarEstadoInscripcion.html", {'estadoInscripcionEditar': estadoInscripcionEditar})
 
 
 def procesarEdicionEstadoInscripcion(request, id):
-    # Aquí debes adaptar según los campos reales del modelo
-    registro = get_object_or_404(EstadoInscripcion, id=id)
-    registro.save()
+    nombre = request.POST["nombre"]
+    estadoinscripcion = get_object_or_404(EstadoInscripcion, id=id)
+    estadoinscripcion.nombre = nombre
+    estadoinscripcion.save()
     messages.success(request, "EstadoInscripcion actualizado exitosamente")
     return redirect('/estadoinscripcion')
 
