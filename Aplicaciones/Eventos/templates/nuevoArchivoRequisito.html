@@ -1,0 +1,87 @@
+{% extends './plantilla.html' %}
+
+{% block contenido %}
+    <div class="row ">
+        <div class="col-md-3 "> </div><br>
+        <div class="col-md-6 bg-light">
+            <h1>Nuevo Requisito del Evento</h1>
+
+            <form action="/guardarArchivoRequisito" method="POST" enctype="multipart/form-data" id="frm_nuevo_archivo_requisito">
+                {% csrf_token %}
+                <label>Inscripción:</label>
+                    <select name="inscripcion" class="form-control" required>
+                    <option value="" disabled selected>Seleccione una inscripcion</option>
+                    {% for inscripcion in inscripciones %}
+                    <option value="{{ inscripcion.id }}">{{ inscripcion.usuario }}</option>
+                    {% endfor %}
+                </select><br>
+
+                <label for="archivo">Archivo :</label>
+                <input type="file" class="form-control" name="archivo" id="archivo" required><br>
+
+                <label for="tipo_archivo">Tipo de Archivo:</label>
+                <input type="text" class="form-control" name="tipo_archivo" id="tipo_archivo" required><br>
+
+                <label for="fecha_subida">Fecha de Subida:</label>
+                <input type="date" class="form-control" name="fecha_subida" id="fecha_subida" required><br>
+
+                <button class="btn btn-success" type="submit">Guardar</button>
+                <a class="btn btn-outline-danger" href="/">Cancelar</a>
+
+
+            <script>
+
+                $("frm_nuevo_archivo_requisito").validate(}{
+                    rules: {
+                        inscripcion: {
+                            required: true
+                        },
+                        archivo: {
+                            required: true,
+                            extension: "pdf|doc|docx"
+                        },
+                        tipo_archivo: {
+                            required: true
+                        },
+                        fecha_subida: {
+                            required: true,
+                            date: true
+                        }
+                    },
+                    messages: {
+                        inscripcion: "Por favor, seleccione una inscripción.",
+                        archivo: {
+                            required: "Por favor, suba un archivo.",
+                            extension: "El archivo debe ser de tipo PDF, DOC o DOCX."
+                        },
+                        tipo_archivo: "Por favor, ingrese el tipo de archivo.",
+                        fecha_subida: {
+                            required: "Por favor, ingrese la fecha de subida.",
+                            date: "Por favor, ingrese una fecha válida."
+                        }
+                    }
+                });
+
+                    
+
+            </script>
+
+            <script>
+                                $("#archivo").fileinput({
+                    language: "es",
+                    allowedFileExtensions: ['copy', 'csv', 'excel', 'pdf', 'doc', 'docx', 'txt', 'ppt', 'pptx'],
+                    showCaption: false,
+                    dropZoneEnabled: true,
+                    showClose: false
+                });
+            </script>
+
+            </form>
+
+        </div>
+        <div class="col-md-3 "> </div>
+
+    </div>
+
+
+{% endblock %}

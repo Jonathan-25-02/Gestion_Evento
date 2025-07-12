@@ -35,8 +35,12 @@
             <label for="fecha_inscripcion" class="form-label">Fecha de Inscripción</label>
             <input type="date" class="form-control" id="fecha_inscripcion" name="fecha_inscripcion"  placeholder="Seleccione una fecha" value="{{ inscripcionEditar.fecha_inscripcion }}" required>
 
-            <button class="btn btn-success" type="submit">Guardar</button>
-            <a class="btn btn-outline-danger" href="/inscripcion">Cancelar</a>
+            <button class="btn btn-warning" type="submit">
+                <i class="fa fa-pen"></i>
+                Editar</button>
+            <a class="btn btn-outline-danger" href="/inscripcion">
+                <i class="fa fa-times"></i>
+                Cancelar</a>
 
         <script>
             $("#frm_nueva_inscripcion").validate({

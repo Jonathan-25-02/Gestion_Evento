@@ -346,36 +346,56 @@ def procesarEdicionEstadoInscripcion(request, id):
 
 # Vistas para ArchivoRequisito
 def archivorequisito(request):
-    registros = ArchivoRequisito.objects.all()
-    return render(request, "archivorequisito.html", {'archivorequisitos': registros})
+    listadoArchivoRequisito = ArchivoRequisito.objects.all()
+    return render(request, "archivorequisito.html", {'archivos_requisitos': listadoArchivoRequisito})
 
 
 def nuevoArchivoRequisito(request):
-    return render(request, "nuevoArchivoRequisito.html")
-
+    inscripciones = Inscripcion.objects.all()
+    return render(request, "nuevoArchivoRequisito.html", {'inscripciones': inscripciones})
 
 def guardarArchivoRequisito(request):
-    # Aquí debes adaptar según los campos reales del modelo
+    inscripcion_id = request.POST["inscripcion"]
+    archivo = request.FILES["archivo"]
+    tipo_archivo = request.POST["tipo_archivo"]
+    fecha_subida = request.POST["fecha_subida"]
+    nuevoArchivoRequisito = ArchivoRequisito.objects.create(
+        inscripcion_id=inscripcion_id,
+        archivo=archivo,
+        tipo_archivo=tipo_archivo,
+        fecha_subida=fecha_subida
+    )
     messages.success(request, "ArchivoRequisito guardado exitosamente")
     return redirect('/archivorequisito')
 
 
 def eliminarArchivoRequisito(request, id):
-    registro = get_object_or_404(ArchivoRequisito, id=id)
-    registro.delete()
+    archivoRequisitoEliminar = get_object_or_404(ArchivoRequisito, id=id)
+    archivoRequisitoEliminar.delete()
     messages.success(request, "ArchivoRequisito eliminado exitosamente")
     return redirect('/archivorequisito')
 
 
 def editarArchivoRequisito(request, id):
-    registro = get_object_or_404(ArchivoRequisito, id=id)
-    return render(request, "editarArchivoRequisito.html", {'archivorequisito': registro})
+    archivoRequisitoEditar = get_object_or_404(ArchivoRequisito, id=id)
+    inscripciones = Inscripcion.objects.all()
+    return render(request, "editarArchivoRequisito.html", {
+        'archivoRequisitoEditar': archivoRequisitoEditar,
+        'inscripciones': inscripciones
+    })
 
 
 def procesarEdicionArchivoRequisito(request, id):
-    # Aquí debes adaptar según los campos reales del modelo
-    registro = get_object_or_404(ArchivoRequisito, id=id)
-    registro.save()
+    inscripcion_id = request.POST["inscripcion"]
+    archivo = request.FILES["archivo"]
+    tipo_archivo = request.POST["tipo_archivo"]
+    fecha_subida = request.POST["fecha_subida"]
+    archivoRequisito = ArchivoRequisito.objects.get(id=id)
+    archivoRequisito.inscripcion = Inscripcion.objects.get(id=inscripcion_id)
+    archivoRequisito.archivo = archivo
+    archivoRequisito.tipo_archivo = tipo_archivo
+    archivoRequisito.fecha_subida = fecha_subida
+    archivoRequisito.save()
     messages.success(request, "ArchivoRequisito actualizado exitosamente")
     return redirect('/archivorequisito')
 
