@@ -1,0 +1,63 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+<div class ="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light">
+
+        <h1>Inscripción del Evento</h1>
+        <form action="/guardarAsistencia" enctype="multipart/form-data" method="POST" id="frm_nueva_asistencia">
+
+            {% csrf_token %}
+
+            <label for="inscripcion" class="form-label">Inscripción</label>
+            <select class="form-select" id="inscripcion" name="inscripcion" required>
+                <option value="">Seleccione una inscripción</option>
+                {% for inscripcion in inscripciones %}
+                    <option value="{{ inscripcion.id }}">{{ inscripcion.usuario.nombre_completo }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="fecha" class="form-label">Fecha del Evento</label>
+            <input type="date" class="form-control" id="fecha" name="fecha" placeholder="Seleccione una fecha" required>
+
+            <label for="metodo_validacion" class="form-label">Método de Validación</label>
+            <input type="text" class="form-control" id="metodo_validacion" name="metodo_validacion" placeholder="Ingrese el método de validación" required>
+
+            <button class="btn btn-success" type="submit">Guardar</button>
+            <a class="btn btn-outline-danger" href="/inscripcion">Cancelar</a>
+
+        </form>
+
+        <script>
+            $("#frm_nueva_asistencia").validate({
+                rules: {
+                    inscripcion: {
+                        required: true
+                    },
+                    fecha: {
+                        required: true,
+                        date: true
+                    },
+                    metodo_validacion: {
+                        required: true
+                    }
+                },
+                messages: {
+                    inscripcion: "Por favor, seleccione una inscripción.",
+                    fecha: {
+                        required: "Por favor, seleccione una fecha.",
+                        date: "Por favor, ingrese una fecha válida."
+                    },
+                    metodo_validacion: "Por favor, ingrese el método de validación."
+                }
+            });
+        </script>
+        </form>
+
+    </div>
+    <div class="col-md-3"></div>
+
+</div>
+{% endblock %}
+

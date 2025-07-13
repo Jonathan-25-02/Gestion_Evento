@@ -403,36 +403,51 @@ def procesarEdicionArchivoRequisito(request, id):
 
 # Vistas para Asistencia
 def asistencia(request):
-    registros = Asistencia.objects.all()
-    return render(request, "asistencia.html", {'asistencias': registros})
+    listadoAsistencia = Asistencia.objects.all()
+    return render(request, "asistencia.html", {'asistencias': listadoAsistencia})
 
 
 def nuevaAsistencia(request):
-    return render(request, "nuevaAsistencia.html")
+    inscripciones = Inscripcion.objects.all()
+    return render(request, "nuevaAsistencia.html", {'inscripciones': inscripciones})
 
 
 def guardarAsistencia(request):
-    # Aquí debes adaptar según los campos reales del modelo
+    inscripcion_id = request.POST["inscripcion"]
+    fecha = request.POST["fecha"]
+    metodo_validacion = request.POST["metodo_validacion"]
+    inscripcion = Inscripcion.objects.get(id=inscripcion_id)
+    nuevaAsistencia = Asistencia.objects.create(
+        inscripcion=inscripcion,
+        fecha=fecha,
+        metodo_validacion=metodo_validacion
+    )
     messages.success(request, "Asistencia guardado exitosamente")
     return redirect('/asistencia')
 
 
 def eliminarAsistencia(request, id):
-    registro = get_object_or_404(Asistencia, id=id)
-    registro.delete()
+    asistenciaEliminar = get_object_or_404(Asistencia, id=id)
+    asistenciaEliminar.delete()
     messages.success(request, "Asistencia eliminado exitosamente")
     return redirect('/asistencia')
 
 
 def editarAsistencia(request, id):
-    registro = get_object_or_404(Asistencia, id=id)
-    return render(request, "editarAsistencia.html", {'asistencia': registro})
+    asistenciaEditar = get_object_or_404(Asistencia, id=id)
+    inscripciones = Inscripcion.objects.all()
+    return render(request, "editarAsistencia.html", {'asistenciaEditar': asistenciaEditar, 'inscripciones': inscripciones})
 
 
 def procesarEdicionAsistencia(request, id):
-    # Aquí debes adaptar según los campos reales del modelo
-    registro = get_object_or_404(Asistencia, id=id)
-    registro.save()
+    inscripcion_id = request.POST["inscripcion"]
+    fecha = request.POST["fecha"]
+    metodo_validacion = request.POST["metodo_validacion"]
+    asistencia = get_object_or_404(Asistencia, id=id)
+    asistencia.inscripcion = Inscripcion.objects.get(id=inscripcion_id)
+    asistencia.fecha = fecha
+    asistencia.metodo_validacion = metodo_validacion
+    asistencia.save()
     messages.success(request, "Asistencia actualizado exitosamente")
     return redirect('/asistencia')
 
