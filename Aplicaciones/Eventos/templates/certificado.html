@@ -1,0 +1,82 @@
+{% extends './plantilla.html' %}
+
+{% block contenido %}
+
+<h1>Certificado del Evento</h1>
+<a href="/nuevoCertificado" class="btn btn-primary">Agregar Certificado</a>
+<table class="table table-bordered table-striped table-hover" id="tbl_certificados">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Iscripcion</th>
+            <th>Archivo</th>
+            <th>Codigo</th>
+            <th>Fecha </th>
+            <th>Acciones</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for certificado in certificados %}
+        <tr>
+            <td>{{ certificado.id }}</td>
+            <td>{{ certificado.inscripcion }}</td>
+            <td>{{ certificado.archivo_pdf }}</td>
+            <td>{{ certificado.codigo_verificacion }}</td>
+            <td>{{ certificado.fecha_emision }}</td>
+            <td>
+                <a href="/editarCertificado/{{ certificado.id }}" class="btn btn-warning">Editar</a>
+                <a href="/eliminarCertificado/{{ certificado.id }}" class="btn btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+ <script>
+    //Swal.fire("SweetAlert2 is working!");
+    function eliminarCertificado(id){
+        Swal.fire({
+        title: "CONFIRMACION",
+        text: "¿ ESTAS SEGURO DE ELIMINAR EL CERTIFICADO DE FORMA PERMANENTE",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, Deseo Eliminar!"
+        }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href="/eliminarCertificado/"+id
+        }
+    });
+
+    }
+</script>
+<script>
+    let table = new DataTable('#tbl_certificados', {
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay datos disponibles en la tabla",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+            "infoEmpty": "Mostrando 0 a 0 de 0 entradas",
+            "infoFiltered": "(filtrado de _MAX_ entradas totales)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "No se encontraron registros coincidentes",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+            "aria": {
+                "sortAscending": ": activar para ordenar columna ascendente",
+                "sortDescending": ": activar para ordenar columna descendente"
+            }
+        }
+    });
+</script>
+{% endblock %}

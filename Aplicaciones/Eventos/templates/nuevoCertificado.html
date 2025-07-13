@@ -1,0 +1,75 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+ <div class ="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light">
+
+        <h1>Nuevo Certificado</h1>
+        <form action="/guardarCertificado" enctype="multipart/form-data" method="POST" id="frm_nuevo_certificado">
+
+            {% csrf_token %}
+
+            <label for="inscripcion" class="form-label">Inscripción</label>
+            <select class="form-select" id="inscripcion" name="inscripcion" required>
+                <option value="">Seleccione una inscripción</option>
+                {% for inscripcion in inscripciones %}
+                    <option value="{{ inscripcion.id }}">{{ inscripcion.usuario.nombre_completo }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="archivo_pdf" class="form-label">Archivo PDF</label>
+            <input type="file" class="form-control" id="archivo_pdf" name="archivo_pdf" accept=".pdf" required>
+
+            <label for="codigo_verificacion" class="form-label">Código de Verificación</label>
+            <input type="text" class="form-control" id="codigo_verificacion" name="codigo_verificacion" required>
+
+            <label for="fecha_emision" class="form-label">Fecha de Emisión</label>
+            <input type="date" class="form-control" id="fecha_emision" name="fecha_emision" required>
+
+
+
+            <button class="btn btn-success" type="submit">Guardar</button>
+            <a class="btn btn-outline-danger" href="/">Cancelar</a>
+
+
+        <script>
+            $("#frm_nuevo_certificado").validate({
+                rules: {
+                    inscripcion: {
+                        required: true
+                    },
+                    archivo_pdf: {
+                        required: true,
+                        extension: "pdf"
+                    },
+                    codigo_verificacion: {
+                        required: true
+                    },
+                    fecha_emision: {
+                        required: true,
+                        date: true
+                    }
+                },
+                messages: {
+                    inscripcion: "Por favor, seleccione una inscripción.",
+                    archivo_pdf: {
+                        required: "Por favor, suba un archivo PDF.",
+                        extension: "El archivo debe ser de tipo PDF."
+                    },
+                    codigo_verificacion: "Por favor, ingrese el código de verificación.",
+                    fecha_emision: {
+                        required: "Por favor, ingrese la fecha de emisión.",
+                        date: "Por favor, ingrese una fecha válida."
+                    }
+                }
+            });
+
+        </script>
+        </form>
+
+    </div>
+    <div class="col-md-3"></div>
+
+</div>
+{% endblock %} 

@@ -455,36 +455,55 @@ def procesarEdicionAsistencia(request, id):
 
 # Vistas para Certificado
 def certificado(request):
-    registros = Certificado.objects.all()
-    return render(request, "certificado.html", {'certificados': registros})
+    listadoCertificado = Certificado.objects.all()
+    return render(request, "certificado.html", {'certificados': listadoCertificado})
 
 
 def nuevoCertificado(request):
-    return render(request, "nuevoCertificado.html")
+    inscripciones = Inscripcion.objects.all()
+    return render(request, "nuevoCertificado.html", {'inscripciones': inscripciones})
 
 
 def guardarCertificado(request):
-    # Aquí debes adaptar según los campos reales del modelo
+    inscripcion_id = request.POST["inscripcion"]
+    archivo_pdf = request.FILES["archivo_pdf"]
+    codigo_verificacion = request.POST["codigo_verificacion"]
+    fecha_emision = request.POST["fecha_emision"]
+    inscripcion = Inscripcion.objects.get(id=inscripcion_id)
+    nuevoCertificado = Certificado.objects.create(
+        inscripcion=inscripcion,
+        archivo_pdf=archivo_pdf,
+        codigo_verificacion=codigo_verificacion,
+        fecha_emision=fecha_emision
+    )
     messages.success(request, "Certificado guardado exitosamente")
     return redirect('/certificado')
 
 
 def eliminarCertificado(request, id):
-    registro = get_object_or_404(Certificado, id=id)
-    registro.delete()
+    certificadoEliminar = get_object_or_404(Certificado, id=id)
+    certificadoEliminar.delete()
     messages.success(request, "Certificado eliminado exitosamente")
     return redirect('/certificado')
 
 
 def editarCertificado(request, id):
-    registro = get_object_or_404(Certificado, id=id)
-    return render(request, "editarCertificado.html", {'certificado': registro})
+    certificadoEditar = get_object_or_404(Certificado, id=id)
+    inscripciones = Inscripcion.objects.all()
+    return render(request, "editarCertificado.html", {'certificadoEditar': certificadoEditar, 'inscripciones': inscripciones})
 
 
 def procesarEdicionCertificado(request, id):
-    # Aquí debes adaptar según los campos reales del modelo
-    registro = get_object_or_404(Certificado, id=id)
-    registro.save()
+    inscripcion_id = request.POST["inscripcion"]
+    archivo_pdf = request.FILES["archivo_pdf"]
+    codigo_verificacion = request.POST["codigo_verificacion"]
+    fecha_emision = request.POST["fecha_emision"]
+    certificadoEditar = get_object_or_404(Certificado, id=id)
+    certificadoEditar.inscripcion = Inscripcion.objects.get(id=inscripcion_id)
+    certificadoEditar.archivo_pdf = archivo_pdf
+    certificadoEditar.codigo_verificacion = codigo_verificacion
+    certificadoEditar.fecha_emision = fecha_emision
+    certificadoEditar.save()
     messages.success(request, "Certificado actualizado exitosamente")
     return redirect('/certificado')
 
