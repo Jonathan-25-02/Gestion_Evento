@@ -511,35 +511,59 @@ def procesarEdicionCertificado(request, id):
 
 # Vistas para Notificacion
 def notificacion(request):
-    registros = Notificacion.objects.all()
-    return render(request, "notificacion.html", {'notificacions': registros})
+    listadoNotificacion = Notificacion.objects.all()
+    return render(request, "notificacion.html", {'notificaciones': listadoNotificacion})
 
 
 def nuevaNotificacion(request):
-    return render(request, "nuevaNotificacion.html")
+    usuarios = Usuario.objects.all()
+    return render(request, "nuevaNotificacion.html", {'usuarios': usuarios})
 
 
 def guardarNotificacion(request):
-    # Aquí debes adaptar según los campos reales del modelo
+    usuario_id = request.POST["usuario"]
+    mensaje = request.POST["mensaje"]
+    fecha_envio = request.POST["fecha_envio"]
+    estado = request.POST["estado"]
+    usuario = Usuario.objects.get(id=usuario_id)
+    nuevaNotificacion = Notificacion.objects.create(
+        usuario=usuario,    
+        mensaje=mensaje,
+        fecha_envio=fecha_envio,
+        estado=estado
+    )
     messages.success(request, "Notificacion guardado exitosamente")
     return redirect('/notificacion')
 
 
 def eliminarNotificacion(request, id):
-    registro = get_object_or_404(Notificacion, id=id)
-    registro.delete()
+    notificacionEliminar = get_object_or_404(Notificacion, id=id)
+    notificacionEliminar.delete()
     messages.success(request, "Notificacion eliminado exitosamente")
     return redirect('/notificacion')
 
 
 def editarNotificacion(request, id):
-    registro = get_object_or_404(Notificacion, id=id)
-    return render(request, "editarNotificacion.html", {'notificacion': registro})
+    notificacionEditar = get_object_or_404(Notificacion, id=id)
+    usuarios = Usuario.objects.all()
+    return render(request, "editarNotificacion.html", {
+        'notificacionEditar': notificacionEditar,
+        'usuarios': usuarios
+    })
+
 
 
 def procesarEdicionNotificacion(request, id):
-    # Aquí debes adaptar según los campos reales del modelo
-    registro = get_object_or_404(Notificacion, id=id)
-    registro.save()
+    usuario_id = request.POST["usuario"]
+    mensaje = request.POST["mensaje"]
+    fecha_envio = request.POST["fecha_envio"]
+    estado = request.POST["estado"]
+    usuario = Usuario.objects.get(id=usuario_id)
+    notificacionEditar = get_object_or_404(Notificacion, id=id)
+    notificacionEditar.usuario = usuario
+    notificacionEditar.mensaje = mensaje
+    notificacionEditar.fecha_envio = fecha_envio
+    notificacionEditar.estado = estado
+    notificacionEditar.save()
     messages.success(request, "Notificacion actualizado exitosamente")
     return redirect('/notificacion')

@@ -1,0 +1,73 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 bg-light">
+
+            <h1> Nueva Notificacion</h1>
+            <form action="/guardarNotificacion" enctype="multipart/form-data" method="POST" id="frm_nuevo_notificacion">
+
+                {% csrf_token %}
+
+                <label for="usuario" class="form-label">Usuario</label>
+                <select class="form-select" id="usuario" name="usuario" required>
+                    <option value="">Seleccione un usuario</option>
+                    {% for usuario in usuarios %}
+                        <option value="{{ usuario.id }}">{{ usuario.nombre_completo }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="mensaje" class="form-label">Mensaje</label>
+                <textarea class="form-control" id="mensaje" name="mensaje" rows="3"></textarea>
+
+                <label for="fecha_envio" class="form-label">Fecha de Envío</label>
+                <input type="date" class="form-control" id="fecha_envio" name="fecha_envio" required>
+
+                <label for="estado" class="form-label">Estado</label>
+                <select class="form-select" id="estado" name="estado" required>
+                    <option value="">Seleccione un estado</option>
+                    <option value="enviado">Leído</option>
+                    <option value="pendiente">No Leído</option>
+                </select>
+                
+                <button class="btn btn-success" type="submit">Guardar</button>
+                <a class="btn btn-outline-danger" href="/">Cancelar</a>
+
+
+            <script>
+                $("#frm_nueva_notificacion").validate({
+                    rules: {
+                        usuario: {
+                            required: true
+                        },
+                        mensaje: {
+                            required: true
+                        },
+                        fecha_envio: {
+                            required: true,
+                            date: true
+                        },
+                        estado: {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        usuario: "Por favor, seleccione un usuario.",
+                        mensaje: "Por favor, ingrese un mensaje.",
+                        fecha_envio: {
+                            required: "Por favor, seleccione una fecha.",
+                            date: "Por favor, ingrese una fecha válida."
+                        },
+                        estado: "Por favor, seleccione un estado."
+                    }
+                });
+            </script>
+            </form>
+
+        </div>
+        <div class="col-md-3"></div>
+
+    </div>
+
+{% endblock %}
