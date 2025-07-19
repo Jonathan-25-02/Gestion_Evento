@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio de Sesión</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f2f6fa;
+            font-family: 'Segoe UI', sans-serif;
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: "";
+            background: url("{% static 'img/logo.jpeg' %}") no-repeat center center;
+            background-size: contain; /* o 'cover' */
+            opacity: 0.07;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+        }
+
+        .login-box {
+            width: 350px;
+            margin: 100px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1; /* Muy importante para estar sobre el logo */
+        }
+
+        .login-box h2 {
+            text-align: center;
+            color: #003366;
+            margin-bottom: 25px;
+        }
+
+        .login-box input[type="email"],
+        .login-box input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 10px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .login-box button:hover {
+            background-color: #0050aa;
+        }
+
+        .registro {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .registro a {
+            color: #003366;
+            text-decoration: none;
+        }
+
+        .registro a:hover {
+            text-decoration: underline;
+        }
+
+        .mensaje-error {
+            color: red;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>Iniciar Sesión</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="mensaje-error">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <input type="email" name="correo" placeholder="Correo institucional" required>
+            <input type="password" name="clave" placeholder="Contraseña" required>
+            <button type="submit">Ingresar</button>
+        </form>
+
+        <div class="registro">
+            ¿Eres nuevo? <a href="/registroDocente">Regístrate aquí</a>
+        </div>
+    </div>
+</body>
+</html>

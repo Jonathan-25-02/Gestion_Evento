@@ -1,4 +1,7 @@
+
+
 {% extends './plantilla.html' %}
+{% load static %}
 {% block contenido %}
 
 <div class ="row">
@@ -27,7 +30,14 @@
             <button class="btn btn-success" type="submit">Guardar</button>
             <a class="btn btn-outline-danger" href="/inscripcion">Cancelar</a>
 
+            <!-- Botón para generar el QR -->
+            <button type="button" class="btn btn-primary" id="btnGenerarQR">Generar QR</button>
+
+
+
         </form>
+
+
 
         <script>
             $("#frm_nueva_asistencia").validate({
@@ -54,6 +64,20 @@
             });
         </script>
         </form>
+        
+        <script>
+            $("#btnGenerarQR").click(function () {
+                const inscripcionId = $("#inscripcion").val();
+                if (inscripcionId) {
+                    window.location.href = `/generar_qr/${inscripcionId}/`;
+                } else {
+                    alert("Por favor, selecciona una inscripción primero.");
+                }
+            });
+        </script>
+
+
+
 
     </div>
     <div class="col-md-3"></div>

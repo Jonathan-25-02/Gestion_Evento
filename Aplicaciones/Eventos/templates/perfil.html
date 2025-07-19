@@ -1,0 +1,50 @@
+{% extends './plantilla.html' %}
+{% load static %}
+{% block contenido %}
+<style>
+    body {
+        background-image: url('https://i.imgur.com/3ZQ3ZCd.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    .bienvenida-box {
+        background: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        padding: 40px;
+        margin-top: 60px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+    .bienvenida-box h1, .bienvenida-box h3 {
+        font-weight: bold;
+    }
+    .bienvenida-box a {
+        margin: 10px;
+    }
+</style>
+
+<div class="container">
+    <div class="bienvenida-box">
+        <h1>🎓 Bienvenido, {{ usuario.nombre_completo }}</h1>
+        <h3>Rol: {{ usuario.tipo|capfirst }}</h3>
+        <p class="mt-4">Gracias por usar nuestra plataforma de <strong>Gestión de Eventos Universitarios</strong>.</p>
+
+        {% if usuario.tipo == 'docente' %}
+            <p>Puedes crear eventos, revisar inscripciones y generar certificados.</p>
+            <a href="/evento" class="btn btn-primary">Ir a mis eventos</a>
+        {% elif usuario.tipo == 'estudiante' %}
+            <p>Explora los eventos disponibles y participa activamente.</p>
+            <a href="/verEventos" class="btn btn-success">Ver eventos disponibles</a>
+        {% elif usuario.tipo == 'administrador' %}
+            <p>Administra toda la plataforma desde aquí.</p>
+            <a href="/usuario" class="btn btn-warning">Ir al panel de administración</a>
+        {% endif %}
+
+        <div class="mt-4">
+            <a href="/logout" class="btn btn-danger">Cerrar sesión</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

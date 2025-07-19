@@ -2,7 +2,12 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.carrera),
+
+    path('', views.perfil_view, name='perfil'),  # Login es la página principal
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('perfil/', views.perfil_view, name='perfil'),
+    path('registroDocente/', views.registro_docente, name='registroDocente'),
 
     # Carrera
     path('carrera', views.carrera, name='carrera'),
@@ -67,6 +72,11 @@ urlpatterns = [
     path('eliminarAsistencia/<int:id>', views.eliminarAsistencia, name='eliminarAsistencia'),
     path('editarAsistencia/<int:id>', views.editarAsistencia, name='editarAsistencia'),
     path('procesarEdicionAsistencia/<int:id>', views.procesarEdicionAsistencia, name='procesarEdicionAsistencia'),
+    path('generar_qr/<int:inscripcion_id>/', views.generar_qr, name='generar_qr'),
+    path('registrar_asistencia/<int:inscripcion_id>/', views.registrar_asistencia, name='registrar_asistencia'),
+    path('asistencia_completada/<int:id>/', views.asistencia_completada, name='asistencia_completada'),
+
+
 
     # Certificado
     path('certificado', views.certificado, name='certificado'),
@@ -83,4 +93,9 @@ urlpatterns = [
     path('eliminarNotificacion/<int:id>', views.eliminarNotificacion, name='eliminarNotificacion'),
     path('editarNotificacion/<int:id>', views.editarNotificacion, name='editarNotificacion'),
     path('procesarEdicionNotificacion/<int:id>', views.procesarEdicionNotificacion, name='procesarEdicionNotificacion'),
+
+    # dashboard
+    # urls.py
+    path('dashboard/', views.dashboard_view, name='dashboard'),
+
 ]

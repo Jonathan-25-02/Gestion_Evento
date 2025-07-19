@@ -18,6 +18,7 @@ class ModalidadEvento(models.Model):
 class Usuario(models.Model):
     nombre_completo = models.CharField(max_length=100)
     correo = models.EmailField(unique=True)
+    clave = models.CharField(max_length=100)
     tipo = models.CharField(max_length=20)  # estudiante, docente, admin
     carrera = models.ForeignKey(Carrera, on_delete=models.SET_NULL, null=True)
     semestre = models.CharField(max_length=10)

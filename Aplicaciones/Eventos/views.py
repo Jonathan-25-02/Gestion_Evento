@@ -1,7 +1,124 @@
 
+import qrcode
+import io
+from io import BytesIO
+import base64
+from django.http import JsonResponse
+from django.urls import reverse
+
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Carrera, Usuario, Evento, ModalidadEvento, Inscripcion, EstadoInscripcion, ArchivoRequisito, Asistencia, Certificado, Notificacion
+# views.py
+from django.db.models import Count
+
+def dashboard_view(request):
+    # Inscripciones por evento
+    inscripciones_evento = (
+        Inscripcion.objects
+        .values('evento__nombre')
+        .annotate(total=Count('id'))
+    )
+
+    # Usuarios por tipo
+    usuarios_tipo = (
+        Usuario.objects
+        .values('tipo')
+        .annotate(total=Count('id'))
+    )
+
+    context = {
+        'inscripciones_evento': list(inscripciones_evento),
+        'usuarios_tipo': list(usuarios_tipo),
+    }
+    return render(request, 'dashboard.html', context)
+
+
+def generar_qr(request, inscripcion_id):
+    url = request.build_absolute_uri(f"/registrar_asistencia/{inscripcion_id}/")
+    qr = qrcode.make(url)
+    buffer = BytesIO()
+    qr.save(buffer)
+    buffer.seek(0)
+    return HttpResponse(buffer.getvalue(), content_type="image/png")
+
+def registrar_asistencia(request, inscripcion_id):
+    inscripcion = get_object_or_404(Inscripcion, id=inscripcion_id)
+
+    # Verifica si ya está registrada
+    ya_registrado = Asistencia.objects.filter(inscripcion=inscripcion).exists()
+
+    if ya_registrado:
+        messages.warning(request, "La asistencia ya fue registrada.")
+    else:
+        Asistencia.objects.create(
+            inscripcion=inscripcion,
+            metodo_validacion='QR'
+        )
+        messages.success(request, "Asistencia registrada correctamente.")
+
+    return render(request, 'asistencia_completada.html')
+
+def login_view(request):
+    if request.method == 'POST':
+        correo = request.POST.get('correo')
+        clave = request.POST.get('clave')
+
+        try:
+            usuario = Usuario.objects.get(correo=correo, clave=clave)
+
+            # Validar si es estudiante por correo institucional
+            if usuario.tipo == "estudiante" and not correo.endswith("@utc.edu.ec"):
+                messages.error(request, "Correo institucional inválido para estudiante")
+                return redirect('/login')
+
+            # Guardar sesión
+            request.session['usuario_id'] = usuario.id
+            request.session['tipo_usuario'] = usuario.tipo
+            return redirect('/perfil')
+
+        except Usuario.DoesNotExist:
+            messages.error(request, "Credenciales incorrectas")
+            return redirect('/login')
+    return render(request, 'login.html')
+
+def logout_view(request):
+    request.session.flush()
+    return redirect('/login')
+
+def perfil_view(request):
+    usuario_id = request.session.get('usuario_id')
+    if not usuario_id:
+        return redirect('/login')
+    usuario = Usuario.objects.get(id=usuario_id)
+    return render(request, 'perfil.html', {'usuario': usuario})
+
+def registro_docente(request):
+    if request.method == 'POST':
+        nombre = request.POST['nombre']
+        correo = request.POST['correo']
+        clave = request.POST['clave']
+        carrera_id = request.POST['carrera']
+
+        if Usuario.objects.filter(correo=correo).exists():
+            messages.error(request, "El correo ya está registrado")
+            return redirect('/registroDocente')
+
+        Usuario.objects.create(
+            nombre_completo=nombre,
+            correo=correo.strip().lower(),
+            clave=clave.strip(),
+            tipo="docente",
+            carrera_id=carrera_id
+        )
+        messages.success(request, "Docente registrado correctamente")
+        return redirect('/login')
+
+    carreras = Carrera.objects.all()
+    return render(request, 'registroDocente.html', {'carreras': carreras})
+
+
 
 
 def inicio(request):
@@ -399,6 +516,9 @@ def procesarEdicionArchivoRequisito(request, id):
     messages.success(request, "ArchivoRequisito actualizado exitosamente")
     return redirect('/archivorequisito')
 
+def asistencia_completada(request, id):
+    asistencia = get_object_or_404(Asistencia, id=id)
+    return render(request, 'asistencia_completada.html', {'asistencia': asistencia})
 
 
 # Vistas para Asistencia

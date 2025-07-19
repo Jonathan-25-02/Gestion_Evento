@@ -1,0 +1,40 @@
+{% extends './plantilla.html' %}
+{% load static %}
+{% block contenido %}
+<h2>Dashboard General</h2>
+
+<canvas id="inscripcionesChart" width="400" height="200"></canvas>
+<canvas id="usuariosChart" width="400" height="200"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const inscripcionesData = {{ inscripciones_evento|safe }};
+    const usuariosData = {{ usuarios_tipo|safe }};
+
+    const inscripcionesChart = new Chart(document.getElementById('inscripcionesChart'), {
+        type: 'bar',
+        data: {
+            labels: inscripcionesData.map(i => i.evento__nombre),
+            datasets: [{
+                label: 'Inscripciones por evento',
+                data: inscripcionesData.map(i => i.total),
+                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                borderWidth: 1
+            }]
+        },
+    });
+
+    const usuariosChart = new Chart(document.getElementById('usuariosChart'), {
+        type: 'pie',
+        data: {
+            labels: usuariosData.map(u => u.tipo),
+            datasets: [{
+                label: 'Usuarios por tipo',
+                data: usuariosData.map(u => u.total),
+                backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe'],
+                borderWidth: 1
+            }]
+        }
+    });
+</script>
+{% endblock %}

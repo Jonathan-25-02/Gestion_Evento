@@ -1,4 +1,6 @@
+
 {% extends './plantilla.html' %}
+{% load static %}
 {% block contenido %}
 
     <div class="row">
@@ -30,7 +32,7 @@
                     <option value="enviado">Leído</option>
                     <option value="pendiente">No Leído</option>
                 </select>
-                
+
                 <button class="btn btn-success" type="submit">Guardar</button>
                 <a class="btn btn-outline-danger" href="/">Cancelar</a>
 

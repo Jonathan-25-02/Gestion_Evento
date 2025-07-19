@@ -1,0 +1,9 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div style="text-align: center; margin-top: 100px;">
+    <h2 style="color: green;">✅ Asistencia registrada exitosamente</h2>
+    <p>Gracias por asistir al evento. Tu presencia ha sido confirmada.</p>
+    <a href="{% url 'asistencia' %}" class="btn btn-primary mt-4">Volver a la asistencia</a>
+</div>
+{% endblock %}
