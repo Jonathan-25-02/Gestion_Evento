@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-xmi-$n+7c9@&)=+2oqy%8yg+^4l19z)ibz_o+tri_!9@q5qfll
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://gestion-evento.onrender.com', 'localhost', '127.0.0.1']
 
 
 
