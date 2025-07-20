@@ -98,6 +98,11 @@ urlpatterns = [
     # urls.py
     path('dashboard/', views.dashboard_view, name='dashboard'),
 
+    path('exportar_eventos_pdf/', views.exportar_eventos_pdf, name='exportar_eventos_pdf'),
+    path('exportar_eventos_excel/', views.exportar_eventos_excel, name='exportar_eventos_excel'),
+
+
+
 
 
 

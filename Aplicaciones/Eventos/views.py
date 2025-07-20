@@ -13,6 +13,54 @@ from django.contrib import messages
 from .models import Carrera, Usuario, Evento, ModalidadEvento, Inscripcion, EstadoInscripcion, ArchivoRequisito, Asistencia, Certificado, Notificacion
 from django.core.mail import send_mail
 from django.db.models import Count
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+import openpyxl
+from .models import Evento
+
+def exportar_eventos_excel(request):
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Eventos"
+
+    # Cabeceras
+    ws.append([
+        'ID', 'Nombre', 'Descripción', 'Inicio', 'Fin', 'Cupos', 'Modalidad', 'Organizador'
+    ])
+
+    # Datos
+    for evento in Evento.objects.all():
+        ws.append([
+            evento.id,
+            evento.nombre,
+            evento.descripcion,
+            evento.fecha_inicio.strftime('%Y-%m-%d'),
+            evento.fecha_fin.strftime('%Y-%m-%d'),
+            evento.cupos,
+            str(evento.modalidad),
+            str(evento.organizador),
+        ])
+
+    # Preparar respuesta
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=eventos.xlsx'
+    wb.save(response)
+    return response
+
+def exportar_eventos_pdf(request):
+    eventos = Evento.objects.all()
+    template_path = 'reporte_eventos_pdf.html'
+    context = {'eventos': eventos}
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="eventos.pdf"'
+    template = get_template(template_path)
+    html = template.render(context)
+
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    if pisa_status.err:
+        return HttpResponse('Error al generar el PDF', status=500)
+    return response
 
 
 
