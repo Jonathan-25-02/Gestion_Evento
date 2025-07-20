@@ -25,12 +25,19 @@
             </select>
 
             <label for="carrera" class="form-label">Carrera</label>
-            <select class="form-select" id="carrera" name="carrera" required>
-                <option value="">Seleccione una carrera</option>
+            <select class="selectpicker form-select" id="carrera" name="carrera" data-live-search="true" title="Seleccione una carrera" required>
                 {% for carrera in carreras %}
                     <option value="{{ carrera.id }}">{{ carrera.nombre }}</option>
                 {% endfor %}
             </select>
+            <script>
+                $(document).ready(function () {
+                    $('.selectpicker').selectpicker('refresh');
+                });
+            </script>
+
+            <br>
+
 
             <label for="semestre" class="form-label">Semestre</label>
             <input type="number" class="form-control" id="semestre" name="semestre" required>
