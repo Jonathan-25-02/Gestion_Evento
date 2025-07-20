@@ -19,6 +19,23 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 import openpyxl
 import json
+import requests
+
+TELEGRAM_BOT_TOKEN = 'TU_TOKEN_AQUI'
+TELEGRAM_CHAT_ID = 'TU_CHAT_ID_AQUI'
+
+def enviar_mensaje_telegram(mensaje):
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    payload = {
+        'chat_id': TELEGRAM_CHAT_ID,
+        'text': mensaje,
+        'parse_mode': 'HTML'
+    }
+
+    try:
+        requests.post(url, data=payload)
+    except Exception as e:
+        print("Error enviando mensaje a Telegram:", e)
 
 def calendario_eventos(request):
     eventos = Evento.objects.all()
@@ -218,9 +235,6 @@ def guardarCarrera(request):
     return redirect('/carrera')
 
 
-from django.db.models import ProtectedError
-from django.contrib import messages
-from django.shortcuts import redirect
 
 def eliminarCarrera(request, id):
     try:
@@ -421,9 +435,7 @@ def guardarModalidadEvento(request):
     return redirect('/modalidadevento')
 
 
-from django.db.models import ProtectedError
-from django.contrib import messages
-from django.shortcuts import redirect
+
 
 def eliminarModalidadEvento(request, id):
     try:
@@ -500,10 +512,6 @@ def guardarInscripcion(request):
 
 
 
-from django.db.models import ProtectedError
-from django.contrib import messages
-from django.shortcuts import redirect
-
 def eliminarInscripcion(request, id):
     try:
         inscripcion = Inscripcion.objects.get(id=id)
@@ -563,9 +571,7 @@ def guardarEstadoInscripcion(request):
     return redirect('/estadoinscripcion')
 
 
-from django.db.models import ProtectedError
-from django.contrib import messages
-from django.shortcuts import redirect
+
 
 def eliminarEstadoInscripcion(request, id):
     try:
@@ -618,9 +624,6 @@ def guardarArchivoRequisito(request):
     return redirect('/archivorequisito')
 
 
-from django.db.models import ProtectedError
-from django.contrib import messages
-from django.shortcuts import redirect
 
 def eliminarArchivoRequisito(request, id):
     try:

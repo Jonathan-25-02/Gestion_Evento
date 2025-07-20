@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: gestionja-web
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn GestionJA.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://gestion_db_gila_user:7kmZv0D4uxcMxDxtqfSErjHw18g0n9mY@dpg-d1unfvemcj7s73emkoqg-a.frankfurt-postgres.render.com/gestion_db_gila

@@ -1,0 +1,1 @@
+gunicorn GestionJA.wsgi:application

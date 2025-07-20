@@ -84,16 +84,20 @@ WSGI_APPLICATION = 'GestionJA.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'universidad_db',  # El nombre de tu base
-        'USER': 'postgres',            # El usuario que creaste (por defecto 'postgres')
-        'PASSWORD': 'root',   # La contraseña que pusiste
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.parse(
+        'postgresql://gestion_db_gila_user:7kmZv0D4uxcMxDxtqfSErjHw18g0n9mY@dpg-d1unfvemcj7s73emkoqg-a.frankfurt-postgres.render.com/gestion_db_gila',
+        conn_max_age=600,  # mantiene la conexión viva
+        ssl_require=True   # importante para Render
+    )
 }
+
+SECRET_KEY = os.environ.get('SECRET_KEY', 'default-secret-key')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = ['tu-dominio-en-render.onrender.com', 'localhost']
+
 
 
 
