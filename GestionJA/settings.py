@@ -29,6 +29,16 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'alayj3665@gmail.com'  # correo institucional
+EMAIL_HOST_PASSWORD = 'jlkz duin sigf vdug'  # NO e
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -76,10 +86,15 @@ WSGI_APPLICATION = 'GestionJA.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'universidad_db',  # El nombre de tu base
+        'USER': 'postgres',            # El usuario que creaste (por defecto 'postgres')
+        'PASSWORD': 'root',   # La contraseña que pusiste
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
 
 
 # Password validation

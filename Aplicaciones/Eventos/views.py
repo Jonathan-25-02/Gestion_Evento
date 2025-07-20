@@ -5,13 +5,17 @@ from io import BytesIO
 import base64
 from django.http import JsonResponse
 from django.urls import reverse
-
+from django.core.mail import send_mail
+from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Carrera, Usuario, Evento, ModalidadEvento, Inscripcion, EstadoInscripcion, ArchivoRequisito, Asistencia, Certificado, Notificacion
-# views.py
+from django.core.mail import send_mail
 from django.db.models import Count
+
+
+
 
 def dashboard_view(request):
     # Inscripciones por evento
@@ -28,12 +32,20 @@ def dashboard_view(request):
         .annotate(total=Count('id'))
     )
 
+    # Asistencias por carrera
+    asistencias_carrera = (
+        Asistencia.objects
+        .values('inscripcion__usuario__carrera__nombre')
+        .annotate(total=Count('id'))
+        .order_by('-total')
+    )
+
     context = {
         'inscripciones_evento': list(inscripciones_evento),
         'usuarios_tipo': list(usuarios_tipo),
+        'asistencias_carrera': list(asistencias_carrera),
     }
     return render(request, 'dashboard.html', context)
-
 
 def generar_qr(request, inscripcion_id):
     url = request.build_absolute_uri(f"/registrar_asistencia/{inscripcion_id}/")
@@ -368,7 +380,6 @@ def nuevaInscripcion(request):
 
 
 def guardarInscripcion(request):
-    # Aquí debes adaptar según los campos reales del modelo
     usuario_id = request.POST["usuario"]
     evento_id = request.POST["evento"]
     estado_id = request.POST["estado"]
@@ -380,8 +391,24 @@ def guardarInscripcion(request):
         estado_id=estado_id,
         fecha_inscripcion=fecha_inscripcion
     )
-    messages.success(request, "Inscripcion guardado exitosamente")
+
+    # Obtiene el correo del usuario inscrito
+    correo_destino = nuevaInscripcion.usuario.correo
+    nombre_usuario = nuevaInscripcion.usuario.nombre_completo
+    evento = nuevaInscripcion.evento
+
+    # Enviar correo con información del evento
+    send_mail(
+        subject='Confirmación de Inscripción al Evento',
+        message=f'Hola {nombre_usuario}, te has inscrito correctamente al evento: {evento.nombre}\nFecha: {evento.fecha_inicio} al {evento.fecha_fin}\nDescripción: {evento.descripcion}',
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[correo_destino],
+        fail_silently=False,
+    )
+
+    messages.success(request, "Inscripción guardada exitosamente. Se envió un correo de confirmación.")
     return redirect('/inscripcion')
+
 
 
 def eliminarInscripcion(request, id):
@@ -687,3 +714,7 @@ def procesarEdicionNotificacion(request, id):
     notificacionEditar.save()
     messages.success(request, "Notificacion actualizado exitosamente")
     return redirect('/notificacion')
+
+
+
+
