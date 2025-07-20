@@ -1,5 +1,7 @@
 
 import qrcode
+from django.core.serializers.json import DjangoJSONEncoder
+
 import io
 from io import BytesIO
 import base64
@@ -16,7 +18,20 @@ from django.db.models import Count
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 import openpyxl
-from .models import Evento
+import json
+
+def calendario_eventos(request):
+    eventos = Evento.objects.all()
+    eventos_json = json.dumps([
+        {
+            'title': e.nombre,
+            'start': e.fecha_inicio.strftime('%Y-%m-%d'),
+            'end': e.fecha_fin.strftime('%Y-%m-%d'),
+            'color': '#1D3557',
+            'textColor': '#F1FAEE',
+        } for e in eventos
+    ], cls=DjangoJSONEncoder)
+    return render(request, 'calendario_eventos.html', {'eventos_json': eventos_json})
 
 def exportar_eventos_excel(request):
     wb = openpyxl.Workbook()

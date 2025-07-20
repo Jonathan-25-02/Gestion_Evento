@@ -35,6 +35,8 @@ class Evento(models.Model):
     cupos = models.PositiveIntegerField()
     modalidad = models.ForeignKey(ModalidadEvento, on_delete=models.SET_NULL, null=True)
     organizador = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='eventos_organizados')
+    creado_en = models.DateTimeField(auto_now_add=True)
+    actualizado_en = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.nombre

@@ -1,0 +1,40 @@
+{% extends './plantilla.html' %}
+{% load static %}
+
+{% block contenido %}
+
+<h1 style="color: #1D3557; text-align: center; margin-bottom: 20px;">📅 Calendario de Eventos</h1>
+
+<div style="margin-bottom: 20px; text-align: center;">
+  <a href="{% url 'evento' %}" 
+     class="btn" 
+     style="background-color: #457B9D; color: white; padding: 10px 20px; border-radius: 5px;">
+     ⬅️ Volver a la Lista de Eventos
+  </a>
+</div>
+
+<div id='calendar' style="max-width: 90%; margin: 0 auto; border: 1px solid #A8DADC; padding: 10px; background-color: #F1FAEE; border-radius: 8px;"></div>
+
+<!-- FullCalendar Global -->
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+
+<!-- Calendario Script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      locale: 'es',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      events: {{ eventos_json|safe }}
+    });
+    calendar.render();
+  });
+</script>
+
+{% endblock %}

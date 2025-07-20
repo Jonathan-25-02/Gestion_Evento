@@ -19,3 +19,66 @@ h1 {
 .btn-custom:hover {
     background-color: #218838;
 }
+
+  #calendar {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* estilos.css - Psicología del Color aplicada */
+
+body {
+  background-color: #F1FAEE;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+}
+
+.navbar {
+  background-color: #1D3557;
+  padding: 10px;
+}
+
+.navbar a, .navbar-brand {
+  color: #F1FAEE;
+  font-weight: bold;
+  text-decoration: none;
+  margin-right: 20px;
+}
+
+.navbar a:hover {
+  color: #A8DADC;
+}
+
+h1, h2, h3 {
+  color: #1D3557;
+}
+
+.btn-primary {
+  background-color: #457B9D;
+  border-color: #457B9D;
+  color: #fff;
+}
+
+.btn-success {
+  background-color: #2A9D8F;
+  border-color: #2A9D8F;
+  color: #fff;
+}
+
+.btn-danger {
+  background-color: #E63946;
+  border-color: #E63946;
+  color: #fff;
+}
+
+.table-striped > tbody > tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.footer {
+  background-color: #1D3557;
+  color: #F1FAEE;
+  padding: 10px;
+  text-align: center;
+  margin-top: 40px;
+}
