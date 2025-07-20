@@ -5,8 +5,11 @@
     <head>
         <!-- importando JQUERY -->
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        
         <!-- importando JQUERY VALIDATION-->
         <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js "></script>
+
+ 
 
         <!-- FullCalendar CSS -->
         <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
@@ -91,7 +94,7 @@
     <body>
 
         <!-- Spinner Start -->
-        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div id="spinner" class="show theme-bg position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
@@ -99,7 +102,7 @@
         <!-- Spinner End -->
 
         <!-- Navbar & Hero Start -->
-        <div class="container-fluid position-relative p-0">
+        <div class="container-fluid position-relative p-0 page-background">
             <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
                 <a href="/perfil" class="navbar-brand p-0">
                     <h1 class="m-0"><i class="fa fa-map-marker-alt me-3"></i>Huellas de Esperanza</h1>
@@ -110,7 +113,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                 <!-- Agrega esto dentro de tu navbar -->
-                <div class="navbar-nav ms-auto py-0">
+                <div class="navbar-nav ms-auto py-0 page-background">
 
                     <!-- Botón Administrador -->
                     <div class="nav-item dropdown">
@@ -150,13 +153,25 @@
                         </div>
                     </div>
 
+                    
+
                     <div class="nav-item">
                         <a href="/logout" class="nav-link text-danger">Cerrar sesión</a>
                     </div>
-                </div>
+
+        
+
+                <button id="btnTema" class="btn btn-dark position-fixed bottom-0 end-0 m-3 z-3">
+                🌙 Cambiar tema
+                </button>
+
 
                 </div>
+
+        
+
             </nav>
+
 
             <!-- Carousel Start -->
             <div class="carousel-header">
@@ -333,11 +348,58 @@
         <script src="{% static 'plantilla/travela/lib/waypoints/waypoints.min.js' %}"></script>
         <script src="{% static 'plantilla/travela/lib/owlcarousel/owl.carousel.min.js' %}"></script>
         <script src="{% static 'plantilla/travela/lib/lightbox/js/lightbox.min.js' %}"></script>
+        
 
 
         <!-- Template Javascript -->
         <script src="{% static 'plantilla/travela/js/main.js' %}"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const btnTema = document.getElementById('btnTema');
+
+                if (btnTema) {
+                    btnTema.addEventListener('click', () => {
+                        document.body.classList.toggle('dark-mode');
+                        localStorage.setItem('tema', document.body.classList.contains('dark-mode') ? 'oscuro' : 'claro');
+                    });
+                }
+
+                const tema = localStorage.getItem('tema');
+                if (tema === 'oscuro') {
+                    document.body.classList.add('dark-mode');
+                }
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const form = document.getElementById("frm_nuevo_evento");
+
+                if (form) {
+                    form.addEventListener("submit", function () {
+                    const submitBtn = form.querySelector(".btn-loading");
+                    if (submitBtn) {
+                        const texto = submitBtn.querySelector(".texto-btn");
+                        const spinner = submitBtn.querySelector(".spinner-border");
+
+                        if (texto) texto.textContent = "Procesando...";
+                        if (spinner) spinner.classList.remove("d-none");
+
+                        submitBtn.disabled = true;
+                    }
+                });
+            }
+        });
+        </script>
+
+        <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+
+        <script src="{% static 'js/loading.js' %}"></script>
+
+
+
     </body>
+      
 
 </html>
 

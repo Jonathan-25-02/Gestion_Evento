@@ -52,6 +52,17 @@
     });
 
     }
+    {% if messages %}
+        <script>
+            {% for message in messages %}
+                Swal.fire({
+                    icon: '{{ message.tags }}' === 'error' ? 'error' : 'success',
+                    title: '{{ message.tags|upper }}',
+                    text: '{{ message }}',
+                });
+            {% endfor %}
+        </script>
+    {% endif %}
 </script>
 <script>
     let table = new DataTable('#tbl_certificados', {

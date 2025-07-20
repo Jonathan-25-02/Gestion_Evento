@@ -34,7 +34,7 @@ class Evento(models.Model):
     fecha_fin = models.DateField()
     cupos = models.PositiveIntegerField()
     modalidad = models.ForeignKey(ModalidadEvento, on_delete=models.SET_NULL, null=True)
-    organizador = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='eventos_organizados')
+    organizador = models.ForeignKey(Usuario, on_delete=models.PROTECT, related_name='eventos_organizados')
     creado_en = models.DateTimeField(auto_now_add=True)
     actualizado_en = models.DateTimeField(auto_now=True)
 
@@ -50,8 +50,8 @@ class EstadoInscripcion(models.Model):
 
 
 class Inscripcion(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    evento = models.ForeignKey(Evento, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
+    evento = models.ForeignKey(Evento, on_delete=models.PROTECT)
     estado = models.ForeignKey(EstadoInscripcion, on_delete=models.SET_NULL, null=True)
     fecha_inscripcion = models.DateField(auto_now_add=True)
 
@@ -60,7 +60,7 @@ class Inscripcion(models.Model):
 
 
 class ArchivoRequisito(models.Model):
-    inscripcion = models.ForeignKey(Inscripcion, on_delete=models.CASCADE)
+    inscripcion = models.ForeignKey(Inscripcion, on_delete=models.PROTECT)
     archivo = models.FileField(upload_to='requisitos/')
     tipo_archivo = models.CharField(max_length=50)
     fecha_subida = models.DateField(auto_now_add=True)
@@ -70,7 +70,7 @@ class ArchivoRequisito(models.Model):
 
 
 class Asistencia(models.Model):
-    inscripcion = models.ForeignKey(Inscripcion, on_delete=models.CASCADE)
+    inscripcion = models.ForeignKey(Inscripcion, on_delete=models.PROTECT)
     fecha = models.DateTimeField(auto_now_add=True)
     metodo_validacion = models.CharField(max_length=50)  # QR, manual, etc.
 
@@ -79,7 +79,7 @@ class Asistencia(models.Model):
 
 
 class Certificado(models.Model):
-    inscripcion = models.OneToOneField(Inscripcion, on_delete=models.CASCADE)
+    inscripcion = models.OneToOneField(Inscripcion, on_delete=models.PROTECT)
     archivo_pdf = models.FileField(upload_to='certificados/')
     codigo_verificacion = models.CharField(max_length=100, unique=True)
     fecha_emision = models.DateField(auto_now_add=True)
@@ -89,7 +89,7 @@ class Certificado(models.Model):
 
 
 class Notificacion(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
     mensaje = models.TextField()
     fecha_envio = models.DateTimeField(auto_now_add=True)
     estado = models.CharField(max_length=50)  # leída, no leída

@@ -76,21 +76,33 @@
 </div>
 
 <script>
-function eliminarEvento(id){
-    Swal.fire({
-        title: "CONFIRMACION",
-        text: "¿ ESTAS SEGURO DE ELIMINAR EL EVENTO DE FORMA PERMANENTE",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Si, Deseo Eliminar!"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = "/eliminarEvento/" + id;
-        }
-    });
-}
+    function eliminarEvento(id){
+        Swal.fire({
+            title: "CONFIRMACION",
+            text: "¿ ESTAS SEGURO DE ELIMINAR EL EVENTO DE FORMA PERMANENTE",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, Deseo Eliminar!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/eliminarEvento/" + id;
+            }
+        });
+    }
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+            Swal.fire({
+                icon: '{{ message.tags }}' === 'error' ? 'error' : 'success',
+                title: '{{ message.tags|upper }}',
+                text: '{{ message }}',
+            });
+        {% endfor %}
+    </script>
+    {% endif %}
+
 </script>
 
 {% endblock %}

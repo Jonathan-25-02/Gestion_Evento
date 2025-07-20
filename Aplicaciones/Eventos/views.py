@@ -1,7 +1,7 @@
 
 import qrcode
 from django.core.serializers.json import DjangoJSONEncoder
-
+from django.db.models import ProtectedError
 import io
 from io import BytesIO
 import base64
@@ -218,9 +218,19 @@ def guardarCarrera(request):
     return redirect('/carrera')
 
 
+from django.db.models import ProtectedError
+from django.contrib import messages
+from django.shortcuts import redirect
+
 def eliminarCarrera(request, id):
-    carreraEliminar = get_object_or_404(Carrera, id=id)
-    carreraEliminar.delete()
+    try:
+        carrera = Carrera.objects.get(id=id)
+        carrera.delete()
+        messages.success(request, "Carrera eliminada correctamente.")
+    except ProtectedError:
+        messages.error(request, "No se puede eliminar: la carrera tiene registros relacionados.")
+    return redirect('carrera')
+
 
     return redirect('/carrera')
 
@@ -275,10 +285,14 @@ def guardarUsuario(request):
 
 
 def eliminarUsuario(request, id):
-    usuarioEliminar = get_object_or_404(Usuario, id=id)
-    usuarioEliminar.delete()
+    try:
+        usuario = Usuario.objects.get(id=id)
+        usuario.delete()
+        messages.success(request, "Usuario eliminado correctamente.")
+    except ProtectedError:
+        messages.error(request, "No se puede eliminar: el usuario tiene registros relacionados.")
+    return redirect('usuario')
 
-    return redirect('/usuario')
 
 
 def editarUsuario(request, id):
@@ -342,11 +356,16 @@ def guardarEvento(request):
     return redirect('/evento')
 
 
+
 def eliminarEvento(request, id):
-    evento = get_object_or_404(Evento, id=id)
-    evento.delete()
-    messages.success(request, "Evento eliminado exitosamente")
-    return redirect('/evento')
+    try:
+        evento = Evento.objects.get(id=id)
+        evento.delete()
+        messages.success(request, "Evento eliminado correctamente.")
+    except ProtectedError:
+        messages.error(request, "No se puede eliminar: el evento tiene registros relacionados.")
+    return redirect('evento')
+
 
 
 def editarEvento(request, id):
@@ -402,11 +421,18 @@ def guardarModalidadEvento(request):
     return redirect('/modalidadevento')
 
 
+from django.db.models import ProtectedError
+from django.contrib import messages
+from django.shortcuts import redirect
+
 def eliminarModalidadEvento(request, id):
-    registro = get_object_or_404(ModalidadEvento, id=id)
-    registro.delete()
-    messages.success(request, "ModalidadEvento eliminado exitosamente")
-    return redirect('/modalidadevento')
+    try:
+        modalidad = ModalidadEvento.objects.get(id=id)
+        modalidad.delete()
+        messages.success(request, "Modalidad del Evento eliminada correctamente.")
+    except ProtectedError:
+        messages.error(request, "No se puede eliminar: la modalidad del evento tiene registros relacionados.")
+    return redirect('modalidadEvento')
 
 
 def editarModalidadEvento(request, id):
@@ -474,11 +500,19 @@ def guardarInscripcion(request):
 
 
 
+from django.db.models import ProtectedError
+from django.contrib import messages
+from django.shortcuts import redirect
+
 def eliminarInscripcion(request, id):
-    inscripcionEliminar = get_object_or_404(Inscripcion, id=id)
-    inscripcionEliminar.delete()
-    messages.success(request, "Inscripcion eliminado exitosamente")
-    return redirect('/inscripcion')
+    try:
+        inscripcion = Inscripcion.objects.get(id=id)
+        inscripcion.delete()
+        messages.success(request, "Inscripción eliminada correctamente.")
+    except ProtectedError:
+        messages.error(request, "No se puede eliminar: la inscripción tiene registros relacionados.")
+    return redirect('inscripcion')
+
 
 
 def editarInscripcion(request, id):
@@ -529,11 +563,19 @@ def guardarEstadoInscripcion(request):
     return redirect('/estadoinscripcion')
 
 
+from django.db.models import ProtectedError
+from django.contrib import messages
+from django.shortcuts import redirect
+
 def eliminarEstadoInscripcion(request, id):
-    estadoInscripcionEliminar = get_object_or_404(EstadoInscripcion, id=id)
-    estadoInscripcionEliminar.delete()
-    messages.success(request, "EstadoInscripcion eliminado exitosamente")
-    return redirect('/estadoinscripcion')
+    try:
+        estadoInscripcion = EstadoInscripcion.objects.get(id=id)
+        estadoInscripcion.delete()
+        messages.success(request, "EstadoInscripcion eliminado correctamente.")
+    except ProtectedError:
+        messages.error(request, "No se puede eliminar: el estado de inscripción tiene registros relacionados.")
+    return redirect('estadoInscripcion')
+
 
 
 def editarEstadoInscripcion(request, id):
@@ -576,11 +618,18 @@ def guardarArchivoRequisito(request):
     return redirect('/archivorequisito')
 
 
+from django.db.models import ProtectedError
+from django.contrib import messages
+from django.shortcuts import redirect
+
 def eliminarArchivoRequisito(request, id):
-    archivoRequisitoEliminar = get_object_or_404(ArchivoRequisito, id=id)
-    archivoRequisitoEliminar.delete()
-    messages.success(request, "ArchivoRequisito eliminado exitosamente")
-    return redirect('/archivorequisito')
+    try:
+        archivoRequisito = ArchivoRequisito.objects.get(id=id)
+        archivoRequisito.delete()
+        messages.success(request, "ArchivoRequisito eliminado correctamente.")
+    except ProtectedError:
+        messages.error(request, "No se puede eliminar: el archivo tiene registros relacionados.")
+    return redirect('archivoRequisito')
 
 
 def editarArchivoRequisito(request, id):
@@ -636,11 +685,17 @@ def guardarAsistencia(request):
     return redirect('/asistencia')
 
 
+
+
 def eliminarAsistencia(request, id):
-    asistenciaEliminar = get_object_or_404(Asistencia, id=id)
-    asistenciaEliminar.delete()
-    messages.success(request, "Asistencia eliminado exitosamente")
-    return redirect('/asistencia')
+    try:
+        asistencia = Asistencia.objects.get(id=id)
+        asistencia.delete()
+        messages.success(request, "Asistencia eliminada correctamente.")
+    except ProtectedError:
+        messages.error(request, "No se puede eliminar: la asistencia tiene registros relacionados.")
+    return redirect('asistencia')
+
 
 
 def editarAsistencia(request, id):
@@ -690,11 +745,16 @@ def guardarCertificado(request):
     return redirect('/certificado')
 
 
+
 def eliminarCertificado(request, id):
-    certificadoEliminar = get_object_or_404(Certificado, id=id)
-    certificadoEliminar.delete()
-    messages.success(request, "Certificado eliminado exitosamente")
-    return redirect('/certificado')
+    try:
+        certificado = Certificado.objects.get(id=id)
+        certificado.delete()
+        messages.success(request, "Certificado eliminado correctamente.")
+    except ProtectedError:
+        messages.error(request, "No se puede eliminar: el certificado tiene registros relacionados.")
+    return redirect('certificado')
+
 
 
 def editarCertificado(request, id):
@@ -747,10 +807,14 @@ def guardarNotificacion(request):
 
 
 def eliminarNotificacion(request, id):
-    notificacionEliminar = get_object_or_404(Notificacion, id=id)
-    notificacionEliminar.delete()
-    messages.success(request, "Notificacion eliminado exitosamente")
-    return redirect('/notificacion')
+    try:
+        notificacion = Notificacion.objects.get(id=id)
+        notificacion.delete()
+        messages.success(request, "Notificacion eliminado correctamente.")
+    except ProtectedError:
+        messages.error(request, "No se puede eliminar: la notificacion tiene registros relacionados.")
+    return redirect('notificacion')
+
 
 
 def editarNotificacion(request, id):

@@ -82,3 +82,23 @@ h1, h2, h3 {
   text-align: center;
   margin-top: 40px;
 }
+
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Opcional: cambia color de navbar, botones, etc. según tu plantilla */
+.navbar, .footer, .card {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode .navbar,
+body.dark-mode .footer,
+body.dark-mode .card {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+/* Puedes agregar más estilos para elementos en modo oscuro */
+
