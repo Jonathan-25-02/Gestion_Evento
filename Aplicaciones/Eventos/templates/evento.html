@@ -28,13 +28,14 @@
 
 <h1>Lista de Evento</h1>
 
-<a href="{% url 'exportar_eventos_pdf' %}" class="btn btn-danger" target="_blank">
-    📄 Exportar a PDF
+<a href="{% url 'exportar_eventos_pdf' %}" class="btn btn-custom">
+    📄 Exportar PDF
 </a>
-<a href="{% url 'exportar_eventos_excel' %}" class="btn btn-success" target="_blank">
+
+<a href="{% url 'exportar_eventos_excel' %}" class="btn btn-custom" target="_blank">
     📊 Exportar a Excel
 </a>
-<button onclick="window.print()" class="btn btn-secondary">
+<button onclick="window.print()" class="btn btn-custom">
     🖨️ Imprimir Lista
 </button>
 
