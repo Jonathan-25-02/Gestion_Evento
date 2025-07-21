@@ -13,13 +13,18 @@
 
             {% csrf_token %}
 
-            <label for="inscripcion" class="form-label">Inscripción</label>
-            <select class="form-select" id="inscripcion" name="inscripcion" required>
-                <option value="">Seleccione una inscripción</option>
+
+            <label for="inscripcion" class="form-label">Inscripcion</label>
+            <select class="selectpicker form-select" id="inscripcion" name="inscripcion" data-live-search="true" title="Seleccione una inscripción" required>
                 {% for inscripcion in inscripciones %}
                     <option value="{{ inscripcion.id }}">{{ inscripcion.usuario.nombre_completo }}</option>
                 {% endfor %}
             </select>
+            <script>
+                $(document).ready(function () {
+                    $('.selectpicker').selectpicker('refresh');
+                });
+            </script>
 
             <label for="fecha" class="form-label">Fecha del Evento</label>
             <input type="date" class="form-control" id="fecha" name="fecha" placeholder="Seleccione una fecha" required>

@@ -12,13 +12,18 @@
 
                 {% csrf_token %}
 
+
                 <label for="usuario" class="form-label">Usuario</label>
-                <select class="form-select" id="usuario" name="usuario" required>
-                    <option value="">Seleccione un usuario</option>
+                <select class="selectpicker form-select" id="usuario" name="usuario" data-live-search="true" title="Seleccione un usuario" required>
                     {% for usuario in usuarios %}
                         <option value="{{ usuario.id }}">{{ usuario.nombre_completo }}</option>
                     {% endfor %}
                 </select>
+                <script>
+                    $(document).ready(function () {
+                        $('.selectpicker').selectpicker('refresh');
+                    });
+                </script>
 
                 <label for="mensaje" class="form-label">Mensaje</label>
                 <textarea class="form-control" id="mensaje" name="mensaje" rows="3"></textarea>

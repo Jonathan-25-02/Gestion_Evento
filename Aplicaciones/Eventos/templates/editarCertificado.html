@@ -73,6 +73,16 @@
             });
 
         </script>
+        <script>
+            $("#archivo_pdf").fileinput({
+                language: "es",
+                allowedFileExtensions: ['copy', 'csv', 'excel', 'pdf', 'doc', 'docx', 'txt', 'ppt', 'pptx'],
+                maxFileSize: 10240,  // Tamaño máximo de 10 MB
+                showCaption: false,
+                dropZoneEnabled: true,
+                showClose: false
+            });
+        </script>
         </form>
 
     </div>

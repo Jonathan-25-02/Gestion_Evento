@@ -13,29 +13,45 @@
 
             {% csrf_token %}
 
+
+
             <label for="usuario" class="form-label">Usuario</label>
-            <select class="form-select" id="usuario" name="usuario" required>
-                <option value="">Seleccione un usuario</option>
+            <select class="selectpicker form-select" id="usuario" name="usuario" data-live-search="true" title="Seleccione un usuario" required>
                 {% for usuario in usuarios %}
                     <option value="{{ usuario.id }}">{{ usuario.nombre_completo }}</option>
                 {% endfor %}
             </select>
+            <script>
+                    $(document).ready(function () {
+                    $('.selectpicker').selectpicker('refresh');
+                });
+            </script>
+
 
             <label for="evento" class="form-label">Evento</label>
-            <select class="form-select" id="evento" name="evento" required>
-                <option value="">Seleccione un evento</option>
+            <select class="selectpicker form-select" id="evento" name="evento" data-live-search="true" title="Seleccione un evento" required>
                 {% for evento in eventos %}
                     <option value="{{ evento.id }}">{{ evento.nombre }}</option>
                 {% endfor %}
             </select>
+            <script>
+                $(document).ready(function () {
+                    $('.selectpicker').selectpicker('refresh');
+                });
+            </script>
+
 
             <label for="estado" class="form-label">Estado</label>
-            <select class="form-select" id="estado" name="estado" required>
-                <option value="">Seleccione un estado</option>
+            <select class="selectpicker form-select" id="estado" name="estado" data-live-search="true" title="Seleccione un estado" required>
                 {% for estado in estados %}
                     <option value="{{ estado.id }}">{{ estado.nombre }}</option>
                 {% endfor %}
             </select>
+            <script>
+                $(document).ready(function () {
+                    $('.selectpicker').selectpicker('refresh');
+                });
+            </script>
 
             <label for="fecha_inscripcion" class="form-label">Fecha de Inscripción</label>
             <input type="date" class="form-control" id="fecha_inscripcion" name="fecha_inscripcion"  placeholder="Seleccione una fecha" required>

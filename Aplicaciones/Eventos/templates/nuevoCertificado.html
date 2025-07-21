@@ -13,13 +13,18 @@
 
             {% csrf_token %}
 
-            <label for="inscripcion" class="form-label">Inscripción</label>
-            <select class="form-select" id="inscripcion" name="inscripcion" required>
-                <option value="">Seleccione una inscripción</option>
+
+            <label for="inscripcion" class="form-label">Inscripcion</label>
+            <select class="selectpicker form-select" id="inscripcion" name="inscripcion" data-live-search="true" title="Seleccione un Certificado" required>
                 {% for inscripcion in inscripciones %}
-                    <option value="{{ inscripcion.id }}">{{ inscripcion.usuario.nombre_completo }}</option>
+                    <option value="{{ inscripcion.id }}">{{ inscripcion.tipo }}</option>
                 {% endfor %}
             </select>
+            <script>
+                $(document).ready(function () {
+                    $('.selectpicker').selectpicker('refresh');
+                });
+            </script>
 
             <label for="archivo_pdf" class="form-label">Archivo PDF</label>
             <input type="file" class="form-control" id="archivo_pdf" name="archivo_pdf" accept=".pdf" required>
@@ -68,6 +73,16 @@
                 }
             });
 
+        </script>
+        <script>
+            $("#archivo_pdf").fileinput({
+                language: "es",
+                allowedFileExtensions: ['copy', 'csv', 'excel', 'pdf', 'doc', 'docx', 'txt', 'ppt', 'pptx'],
+                maxFileSize: 10240,  // Tamaño máximo de 10 MB
+                showCaption: false,
+                dropZoneEnabled: true,
+                showClose: false
+            });
         </script>
         </form>
 

@@ -23,7 +23,13 @@
         <tr>
             <td>{{ certificado.id }}</td>
             <td>{{ certificado.inscripcion }}</td>
-            <td>{{ certificado.archivo_pdf }}</td>
+            <td>
+                {% if certificado.archivo_pdf %}
+                    <a href="{{ certificado.archivo_pdf.url }}" download>{{ certificado.archivo_pdf.name }}</a>
+                {% else %}
+                    Sin documento
+                {% endif %}
+            </td>
             <td>{{ certificado.codigo_verificacion }}</td>
             <td>{{ certificado.fecha_emision }}</td>
             <td>

@@ -22,7 +22,13 @@
         <tr>
             <td>{{ archivo_requisito.id }}</td>
             <td>{{ archivo_requisito.inscripcion }}</td>
-            <td>{{ archivo_requisito.archivo }}</td>
+            <td>
+                {% if archivo_requisito.archivo %}
+                    <a href="{{ archivo_requisito.archivo.url }}" download>{{ archivo_requisito.archivo.name }}</a>
+                {% else %}
+                    Sin documento
+                {% endif %}
+            </td>
             <td>{{ archivo_requisito.tipo_archivo }}</td>
             <td>{{ archivo_requisito.fecha_subida }}</td>
             <td>

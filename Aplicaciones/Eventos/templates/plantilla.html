@@ -103,36 +103,35 @@
 
         <!-- Navbar & Hero Start -->
         <div class="container-fluid position-relative p-0 page-background">
-            <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-                <a href="/perfil" class="navbar-brand p-0">
-                    <h1 class="m-0"><i class="fa fa-map-marker-alt me-3"></i>Eventos Universitarios</h1>
-                    <!-- <img src="img/logo.png" alt="Logo"> -->
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                <!-- Agrega esto dentro de tu navbar -->
-                <div class="navbar-nav ms-auto py-0 page-background">
+           <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0 shadow">
+            <a href="/perfil" class="navbar-brand p-0 text-white">
+                <h1 class="m-0"><i class="fa fa-map-marker-alt me-3"></i>Eventos Universitarios</h1>
+            </a>
 
-                    <!-- Botón Administrador -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars text-white"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+
+                    <!-- Administrador -->
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Administrador</a>
-                        <div class="dropdown-menu rounded-0 m-0">
+                        <div class="dropdown-menu dropdown-menu-dark rounded-0 m-0">
                             <a href="/usuario" class="dropdown-item">Usuarios</a>
                             <a href="/carrera" class="dropdown-item">Carreras</a>
                             <a href="/modalidadevento" class="dropdown-item">Modalidades</a>
                             <a href="/estadoinscripcion" class="dropdown-item">Estados Inscripción</a>
                             <a href="/notificacion" class="dropdown-item">Notificaciones</a>
                             <a href="/dashboard" class="dropdown-item">Dashboard</a>
-
                         </div>
                     </div>
 
-                    <!-- Botón Docente -->
+                    <!-- Docente -->
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Docente</a>
-                        <div class="dropdown-menu rounded-0 m-0">
+                        <div class="dropdown-menu dropdown-menu-dark rounded-0 m-0">
                             <a href="/evento" class="dropdown-item">Eventos</a>
                             <a href="/inscripcion" class="dropdown-item">Ver Inscripciones</a>
                             <a href="/archivorequisito" class="dropdown-item">Revisar Requisitos</a>
@@ -141,10 +140,10 @@
                         </div>
                     </div>
 
-                    <!-- Botón Estudiante -->
+                    <!-- Estudiante -->
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Estudiante</a>
-                        <div class="dropdown-menu rounded-0 m-0">
+                        <div class="dropdown-menu dropdown-menu-dark rounded-0 m-0">
                             <a href="/evento" class="dropdown-item">Ver Eventos</a>
                             <a href="/inscripcion" class="dropdown-item">Mis Inscripciones</a>
                             <a href="/archivorequisito" class="dropdown-item">Subir Requisitos</a>
@@ -153,24 +152,19 @@
                         </div>
                     </div>
 
-                    
-
+                    <!-- Cerrar sesión -->
                     <div class="nav-item">
                         <a href="/logout" class="nav-link text-danger">Cerrar sesión</a>
                     </div>
 
-        
-
-                <button id="btnTema" class="btn btn-dark position-fixed bottom-0 end-0 m-3 z-3">
-                🌙 Cambiar tema
-                </button>
-
-
                 </div>
 
-        
-
-            </nav>
+                <!-- Botón de tema (opcional, puedes activar el JS luego si gustas) -->
+                <button id="btnTema" class="btn btn-outline-light ms-3">
+                    🌙 Cambiar tema
+                </button>
+            </div>
+        </nav>
 
 
             <!-- Carousel Start -->

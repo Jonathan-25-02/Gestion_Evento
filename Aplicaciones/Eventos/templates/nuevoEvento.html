@@ -29,21 +29,32 @@
                 <label for="cupos">Cupos</label>
                 <input placeholder = "Ingrese la cantidad de cupos" type="number" class="form-control" id="cupos" name="cupos" required>
 
-                <label>Modalidad</label>
-                <select class="form-control" id="modalidad" name="modalidad" required>
-                    <option value="" disable selected>Seleccione una modalidad</option>
+                <br>
+                <label for="modalidad" class="form-label">Modalidad</label>
+                <select class="selectpicker form-select" id="modalidad" name="modalidad" data-live-search="true" title="Seleccione una modalidad" required>
                     {% for modalidad in modalidades %}
                         <option value="{{ modalidad.id }}">{{ modalidad.tipo }}</option>
                     {% endfor %}
                 </select>
-
-                <label>Organizador</label>
-                <select class="form-control" id="organizador" name="organizador" required>
+                <script>
+                    $(document).ready(function () {
+                        $('.selectpicker').selectpicker('refresh');
+                    });
+                </script>
+                <br>
+                <br>
+                <label for="organizador" class="form-label">Organizador</label>
+                <select class="form-control" id="organizador" name="organizador" data-live-search="true" required>
                     <option value="" disable selected>Seleccione un organizador</option>
                     {% for organizador in organizadores %}
                         <option value="{{ organizador.id }}">{{ organizador.nombre_completo }}</option>
                     {% endfor %}
                 </select>
+                <script>
+                    $(document).ready(function () {
+                        $('.selectpicker').selectpicker('refresh');
+                    });
+                </script>
 
 
                 <button id="btnGuardarEvento" type="submit" class="btn btn-primary">

@@ -556,7 +556,7 @@ def procesarEdicionInscripcion(request, id):
 # Vistas para EstadoInscripcion
 def estadoinscripcion(request):
     listadoEstadoInscripcion = EstadoInscripcion.objects.all()
-    return render(request, "estadoInscripcion.html", {'Inscripciones': listadoEstadoInscripcion})
+    return render(request, "estadoInscripcion.html", {'estadoInscripciones': listadoEstadoInscripcion})
 
 
 def nuevoEstadoInscripcion(request):
@@ -602,7 +602,7 @@ def procesarEdicionEstadoInscripcion(request, id):
 # Vistas para ArchivoRequisito
 def archivorequisito(request):
     listadoArchivoRequisito = ArchivoRequisito.objects.all()
-    return render(request, "archivorequisito.html", {'archivos_requisitos': listadoArchivoRequisito})
+    return render(request, "archivoRequisito.html", {'archivos_requisitos': listadoArchivoRequisito})
 
 
 def nuevoArchivoRequisito(request):
