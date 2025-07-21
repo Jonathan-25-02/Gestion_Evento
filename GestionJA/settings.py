@@ -26,18 +26,26 @@ SECRET_KEY = 'django-insecure-xmi-$n+7c9@&)=+2oqy%8yg+^4l19z)ibz_o+tri_!9@q5qfll
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://gestion-evento.onrender.com', 'localhost', '127.0.0.1']
-
-
+ALLOWED_HOSTS = []
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'EMAIL_HOST_USER'  # correo institucional
-EMAIL_HOST_PASSWORD = 'EMAIL_HOST_PASSWORD'  # NO e
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_USE_TLS = True
+#EMAIL_PORT = 587
+#EMAIL_HOST_USER = 'alayj3665@gmail.com'  # correo institucional
+#EMAIL_HOST_PASSWORD = 'jlkz duin sigf vdug'  # NO e
+#DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Application definition
 
