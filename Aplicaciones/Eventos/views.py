@@ -419,7 +419,7 @@ def procesarEdicionEvento(request, id):
 # Vistas para ModalidadEvento
 def modalidadevento(request):
     registros = ModalidadEvento.objects.all()
-    return render(request, "modalidadevento.html", {'modalidad_eventos': registros})
+    return render(request, "modalidadEvento.html", {'modalidad_eventos': registros})
 
 
 def nuevaModalidadEvento(request):
@@ -556,7 +556,7 @@ def procesarEdicionInscripcion(request, id):
 # Vistas para EstadoInscripcion
 def estadoinscripcion(request):
     listadoEstadoInscripcion = EstadoInscripcion.objects.all()
-    return render(request, "estadoinscripcion.html", {'Inscripciones': listadoEstadoInscripcion})
+    return render(request, "estadoInscripcion.html", {'Inscripciones': listadoEstadoInscripcion})
 
 
 def nuevoEstadoInscripcion(request):
