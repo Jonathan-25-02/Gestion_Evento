@@ -24,8 +24,9 @@ urlpatterns = [
     path('', include('Aplicaciones.Eventos.urls')),
 ]
 
+# Siempre servir archivos media (solo en desarrollo)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    
-    if hasattr(settings, 'STATICFILES_DIRS') and settings.STATICFILES_DIRS:
-        urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+
+# Nunca sirvas archivos estáticos manualmente en producción
+# Usa collectstatic + whitenoise para eso

@@ -1,0 +1,297 @@
+/* static/css/estilos.css */
+
+body {
+    background-color: #f8f9fa;
+}
+
+h1 {
+    color: #007bff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+
+.btn-custom {
+    background-color: #28a745;
+    color: white;
+    border-radius: 20px;
+    padding: 8px 20px;
+    transition: 0.3s;
+}
+
+.btn-custom:hover {
+    background-color: #218838;
+}
+
+#calendar {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* estilos.css - Psicología del Color aplicada */
+
+body {
+  background-color: #F1FAEE;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+}
+
+.navbar {
+  background-color: #1D3557;
+  padding: 10px;
+}
+
+.navbar a, .navbar-brand {
+  color: #F1FAEE;
+  font-weight: bold;
+  text-decoration: none;
+  margin-right: 20px;
+}
+
+.navbar a:hover {
+  color: #A8DADC;
+}
+
+h1, h2, h3 {
+  color: #1D3557;
+}
+
+.btn-primary {
+  background-color: #457B9D;
+  border-color: #457B9D;
+  color: #fff;
+}
+
+.btn-success {
+  background-color: #2A9D8F;
+  border-color: #2A9D8F;
+  color: #fff;
+}
+
+.btn-danger {
+  background-color: #E63946;
+  border-color: #E63946;
+  color: #fff;
+}
+
+.table-striped > tbody > tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.footer {
+  background-color: #1D3557;
+  color: #F1FAEE;
+  padding: 10px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* Modo claro por defecto */
+body {
+  background-color: #fff;
+  color: #000;
+}
+
+
+
+/* Ejemplo para botones */
+.btn-custom {
+  background-color: #457B9D;
+  color: white;
+}
+
+body.dark-mode .btn-custom {
+  background-color: #1D3557;
+  color: #F1FAEE;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Opcional: cambia color de navbar, botones, etc. según tu plantilla */
+.navbar, .footer, .card {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode .navbar,
+body.dark-mode .footer,
+body.dark-mode .card {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+/* Tablas */
+body.dark-mode .table {
+  background-color: #1e1e1e;
+  color: #f1f1f1;
+}
+
+body.dark-mode .table-striped > tbody > tr:nth-child(odd) {
+  background-color: #2c2c2c;
+}
+
+/* Inputs y selects */
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+  background-color: #2c2c2c;
+  color: #f1f1f1;
+  border: 1px solid #444;
+}
+
+/* Dropdowns */
+body.dark-mode .dropdown-menu {
+  background-color: #2c2c2c;
+  color: #f1f1f1;
+}
+
+/* Links */
+body.dark-mode a {
+  color: #90caf9;
+}
+
+/* Botones */
+body.dark-mode .btn {
+  background-color: #333;
+  color: #fff;
+  border-color: #555;
+}
+
+body.dark-mode .btn:hover {
+  background-color: #444;
+  border-color: #666;
+}
+
+/* Fondo y texto principal */
+body.dark-mode {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+/* Contenedores generales */
+body.dark-mode .container,
+body.dark-mode .content,
+body.dark-mode .main-content,
+body.dark-mode .card,
+body.dark-mode .modal-content {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+/* NavBar y footer */
+body.dark-mode .navbar,
+body.dark-mode .footer {
+  background-color: #1c1c1c !important;
+  color: #ffffff;
+}
+
+/* Tarjetas (card) */
+body.dark-mode .card {
+  background-color: #1d1d1d;
+  color: #fff;
+  border-color: #444;
+}
+
+/* Tablas */
+body.dark-mode table,
+body.dark-mode .table {
+  background-color: #1d1d1d;
+  color: #fff;
+}
+
+body.dark-mode .table-striped > tbody > tr:nth-child(odd) {
+  background-color: #2c2c2c;
+}
+
+/* Formularios */
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+  background-color: #2c2c2c;
+  color: #f1f1f1;
+  border: 1px solid #555;
+}
+
+/* Dropdown menus */
+body.dark-mode .dropdown-menu {
+  background-color: #2c2c2c;
+  color: #fff;
+}
+
+/* Links */
+body.dark-mode a {
+  color: #90caf9;
+}
+
+/* Botones generales */
+body.dark-mode .btn {
+  background-color: #333;
+  color: #fff;
+  border-color: #555;
+}
+
+body.dark-mode .btn:hover {
+  background-color: #444;
+  border-color: #666;
+}
+
+/* SweetAlert2 dark mode (si usas SweetAlert2) */
+body.dark-mode .swal2-popup {
+  background: #2c2c2c;
+  color: #fff;
+}
+
+/* DataTables */
+body.dark-mode .dataTables_wrapper {
+  background-color: #1d1d1d;
+  color: #fff;
+}
+
+/* Bordes y textos secundarios */
+body.dark-mode .border,
+body.dark-mode hr {
+  border-color: #555;
+}
+
+/* Estilo del fondo del spinner */
+.theme-bg {
+  background-color: #ffffff;
+}
+
+body.dark-mode .theme-bg {
+  background-color: #121212;
+}
+
+.theme-navbar {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.dark-mode .theme-navbar {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+body.dark-mode .theme-navbar a,
+body.dark-mode .theme-navbar h1 {
+  color: #ffffff;
+}
+
+/* Fondo claro por defecto */
+.page-background {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Fondo oscuro si el body tiene la clase dark-mode */
+body.dark-mode .page-background {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+
+
+
+
+
