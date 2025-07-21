@@ -16,18 +16,16 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+#wzQiyLN5tF7_VgTiae0AEnRM11fURRPVlCha54M7faE
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-xmi-$n+7c9@&)=+2oqy%8yg+^4l19z)ibz_o+tri_!9@q5qfll'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
+SECRET_KEY = os.environ.get('SECRET_KEY', 'reemplaza-esto-con-uno-fuerte')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = ['gestion-evento.onrender.com', 'localhost', '127.0.0.1']
 
+# SECURITY WARNING: don't run with debug turned on in production!
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
@@ -103,9 +101,6 @@ DATABASES = {
     )
 }
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'default-secret-key')
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = ['tu-dominio-en-render.onrender.com', 'localhost']
 
 
 
